@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="Blog,code" />
+   
+  <meta name="description" content="就想着,写点文章而已" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Java内存区域 |  待春
+  </title>
+  <meta name="generator" content="hexo-theme-ayer">
+  
+  <link rel="shortcut icon" href="/header.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Java内存区域"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Java内存区域
+</h1>
+ 
+
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" class="article-date">
+  <time datetime="2021-02-22T07:45:24.000Z" itemprop="datePublished">2021-02-22</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a> / <a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a>
+  </div>
+  
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.6k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>Java的内存区域在jdk1.6时发生了变化，这里主要介绍jdk1.8的内存区域，同时会指明发生了那些变化。</p>
+<a id="more"></a>
+
+<h3 id="一、运行时的数据区域"><a href="#一、运行时的数据区域" class="headerlink" title="一、运行时的数据区域"></a>一、运行时的数据区域</h3><h4 id="1-内存区域划分图示"><a href="#1-内存区域划分图示" class="headerlink" title="1. 内存区域划分图示"></a>1. 内存区域划分图示</h4><h5 id="1-1-JDK1-7之前："><a href="#1-1-JDK1-7之前：" class="headerlink" title="1.1 JDK1.7之前："></a>1.1 <strong>JDK1.7之前</strong>：</h5><p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/JDK1.6%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86.png" alt="JDK1.6内存区域划分"></p>
+<h5 id="1-2-JDK1-8"><a href="#1-2-JDK1-8" class="headerlink" title="1.2 JDK1.8"></a>1.2 <strong>JDK1.8</strong></h5><p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/JDK1.8%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86.png" alt="JDK1.8内存区域划分"></p>
+<p>如上图所示：</p>
+<ul>
+<li><p>线程私有：虚拟机栈、本地方法栈、程序计数器</p>
+</li>
+<li><p>线程共享：堆、元空间(方法区)、直接内存(非运行时数据区的一部分)</p>
+</li>
+</ul>
+<h4 id="2-虚拟机栈"><a href="#2-虚拟机栈" class="headerlink" title="2.虚拟机栈"></a>2.虚拟机栈</h4><ol>
+<li><strong>虚拟机栈可以简单的理解为执行Java 方法 (也就是字节码) 服务。描述的是 Java 方法执行的内存模型。</strong></li>
+<li>Java 内存可以粗糙的区分为<strong>堆内存</strong>（Heap）和<strong>栈内存</strong> (Stack),其中栈就是现在说的虚拟机栈，或者说是虚拟机栈中局部变量表部分。 （实际上，Java 虚拟机栈是由一个个栈帧组成，而每个栈帧中都拥有：局部变量表、操作数栈、动态链接、方法出口信息。）</li>
+<li><strong>Java虚拟机会出现两种错误：<code>StackOverFlowerError</code>与<code>OutOfMemoryError</code>(OOM)。</strong><ul>
+<li><code>StackOverFlowerError</code>：<strong>栈内存溢出错误</strong>：若 Java 虚拟机栈的内存大小不允许动态扩展，那么当线程请求栈的深度超过当前 Java 虚拟机栈的最大深度的时候，就抛出 <code>StackOverFlowError</code> 错误。</li>
+<li><code>OutOfMemoryError</code>：<strong>堆内存溢出错误</strong>：若 Java 虚拟机堆中没有空闲内存，并且垃圾回收器也无法提供更多内存的话。就会抛出 OutOfMemoryError 错误。</li>
+</ul>
+</li>
+<li>Java 栈可用类比数据结构中栈，Java 栈中保存的主要内容是栈帧，每一次函数调用都会有一个对应的栈帧被压入 Java 栈，每一个函数调用结束后，都会有一个栈帧被弹出。 Java 方法有两种返回方式：1. return 语句。2. 抛出异常。以上两种方式会导致栈帧弹栈。</li>
+</ol>
+<h4 id="3-本地方法栈"><a href="#3-本地方法栈" class="headerlink" title="3.本地方法栈"></a>3.本地方法栈</h4><ol>
+<li><strong>本地方法栈可以简单的理解为执行本地 方法 (也就是Native) 服务。</strong> 在 HotSpot 虚拟机中和 Java 虚拟机栈合二为一。</li>
+<li>本地方法栈的执行也会创建栈帧。</li>
+<li>本地方法栈也会有<code>StackOverFlowerError</code>与<code>OutOfMemory</code>错误。</li>
+</ol>
+<h4 id="4-程序计数器"><a href="#4-程序计数器" class="headerlink" title="4.程序计数器"></a>4.程序计数器</h4><ol>
+<li><strong>程序计数器可以看作是当前线程所执行的字节码的行号指示器</strong>，字节码解释器通过改变这个计数器的值来选取下一条执行的字节码指令，分支、循环、跳转、异常处理、线程恢复(可以保存线程的执行现场) 等功能都需要依赖这个计数器来完成。</li>
+<li>程序计数器是线程私有的，每个线程拥有自己的计数器，各计数器互不影响，目的是为了线程切换后能恢复到正确的执行位置。</li>
+<li>程序计数器是唯一不会出现<code>OutOfMemory</code>错误，生命周期与自己的线程相同</li>
+</ol>
+<h4 id="5-堆"><a href="#5-堆" class="headerlink" title="5.堆"></a>5.堆</h4><ol>
+<li>堆是JVM中最大的地方，几乎所有的对象实例都在这里分配内存</li>
+<li>Java的垃圾回收主要在堆中，因此也被称为GC堆，Java8采用的分代垃圾回收算法<br><span style="color:red"><a href="/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="JVM垃圾回收">JVM垃圾回收</a></span>。</li>
+<li>堆内存分为：<ol>
+<li>新生代(Young Generation) :包括Eden区(复制算法，gc后存活的复制进入survivor或老生代(大对象))，Survivor From与Survivor To(复制)</li>
+<li>老生代(Old Generation): (标记整理)</li>
+<li>永生代(Permanent Generation)   || 元空间(JDK1.8)</li>
+</ol>
+</li>
+</ol>
+<p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/Java%E7%9A%84%E5%A0%86%E5%86%85%E5%AD%98(%E5%B9%B4%E9%BE%84%E4%BB%A3)%E5%88%92%E5%88%86.png" alt="Java的堆内存(年龄代)划分"></p>
+<h4 id="6-方法区-元空间"><a href="#6-方法区-元空间" class="headerlink" title="6.方法区(元空间)"></a>6.方法区(元空间)</h4><p>线程共享，用于存放被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。</p>
+<ol>
+<li><p>方法区与永久代的关系：</p>
+<ul>
+<li>永久代是HotSpot虚拟机中对方法区的一种实现。</li>
+</ul>
+</li>
+<li><p>JDK1.8移除永久代替换为元空间的原因</p>
+<ul>
+<li><p>永久代存在OOM问题：永久代有JVM设置的固定大小，元空间受本机内存的限制，元空间OOM的几率会更小。</p>
+</li>
+<li><p>在 JDK8，合并 HotSpot 和 JRockit 的代码时, JRockit 从来没有一个叫永久代的东西, 合并之后就没有必要额外的设置这么一个永久代的地方了</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="7-运行时常量池"><a href="#7-运行时常量池" class="headerlink" title="7. 运行时常量池"></a>7. 运行时常量池</h4><p>运行时常量池是方法区的一部分。Class 文件中除了有类的版本、字段、方法、接口等描述信息外，还有常量池表（用于存放编译期生成的各种字面量和符号引用）</p>
+<ol>
+<li>jdk1.7之前，运行时常量池包括字符串常量池在方法区，HotSpot的实现为永久代。</li>
+<li>jdk1.7，字符串常量池从方法区移入堆中，运行时常量池依旧在方法区，HotSpot的实现为永久代。</li>
+<li>jdk1.8，永久代移除，替换为元空间，运行时常量池也移入元空间。</li>
+</ol>
+<h4 id="8-直接内存"><a href="#8-直接内存" class="headerlink" title="8. 直接内存"></a>8. 直接内存</h4><p>直接内存不受java堆分配的限制，受本机总内存大小以及处理器寻址空间的限制。使用过多，依旧会出现OOM问题。</p>
+<h3 id="二、HotSpot虚拟机的对象管理"><a href="#二、HotSpot虚拟机的对象管理" class="headerlink" title="二、HotSpot虚拟机的对象管理"></a>二、HotSpot虚拟机的对象管理</h3><h4 id="2-1、-对象的创建"><a href="#2-1、-对象的创建" class="headerlink" title="2.1、 对象的创建"></a>2.1、 对象的创建</h4><p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/Java%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B.png"></p>
+<ol>
+<li><p><strong>类加载检测</strong><br>当虚拟机遇到一条 new 指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过。如果没有，那必须先执行相应的类加载过程。<br><span style="color:red">类加载机制：。。。</span></p>
+</li>
+<li><p><strong>分配内存</strong><br>在<strong>类加载检查</strong>通过后，接下来虚拟机将为新生对象<strong>分配内存</strong>。对象所需的内存大小在类加载完成后便可确定，为对象分配空间的任务等同于把一块确定大小的内存从 Java 堆中划分出来。<strong>分配方式</strong>有 <strong>“指针碰撞”</strong> 和 <strong>“空闲列表”</strong> 两种，<strong>选择哪种分配方式由 Java 堆是否规整决定，而 Java 堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能决定</strong>。</p>
+<ol>
+<li>指针碰撞：堆内存规整，用过的内存一边，没用过的另一半，中间一个分界指针，只需要向没用过的内存方向移动指针即可</li>
+<li>空闲列表：对内存不规整，堆内存维护一个列表，列表记录那块内存可用，分配的时候找一个足够大的内存来划分对象实例。</li>
+</ol>
+<p>分配内存的线程安全问题：</p>
+<ol>
+<li>CAS+失败重试机制：虚拟机采用CAS再配上失败重试机制保证更新操作的原子性</li>
+<li>TLAB：为每一个线程预先再EDEN区分配一块内存，JVM再给对象分配内存时首先在TLAB分配，当对象大于TLAB的剩余内存或TLAB的内存用尽时，再采用上述的CAS进行内存分配。</li>
+</ol>
+</li>
+<li><p><strong>初始化零值</strong><br>分配内存完毕之后，需要将分配的内存空间初始化为零值，保证对象实例字段不赋值也可以直接使用，能访问这些字段的数据类型对应的零值。</p>
+</li>
+<li><p><strong>设置对象头</strong><br>初始化零值之后，对对象进行必要的设置，例如这个对象是哪个类的实例、如何才能找到类的元数据信息、对象的哈希码、对象的 GC 分代年龄等信息。 <strong>这些信息存放在对象头</strong></p>
+</li>
+<li><p><strong>执行init方法</strong><br> 对虚拟机而言，对象已经产生，但java程序而言，对象创建才刚开始，对象需要执行init方法，该方法把对象（实例变量）按照程序中定义的初始赋值进行初始化；</p>
+</li>
+</ol>
+<h4 id="2-2、-对象的内存布局"><a href="#2-2、-对象的内存布局" class="headerlink" title="2.2、 对象的内存布局"></a>2.2、 对象的内存布局</h4><p>​    在HotSpot虚拟机中，对象在内存中可以分为三块区域：<strong>对象头、实例数据、对齐填充</strong></p>
+<p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/Java%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png"></p>
+<ol>
+<li>对象头：包括两部分信息，第一部分<strong>存储对象的自身运行时数据</strong>(哈希码、GC分代年龄、锁状态的标志等等)，另一部分是<strong>类型指针</strong>，即对象指向它的类元数据的指针。</li>
+<li>实例数据：存储有效信息，即存储程序所定义的各种类型的字段内容。</li>
+<li>对齐填充：不必然存在，仅仅起一个占位的作用：由于HotSpot虚拟机要求对象起始地址必须是<strong>8字节的整数倍</strong>(对象的大小必须是8字节的整数倍)。填充数据不是必须存在的，仅仅是为了字节对齐。<br>根据“计算机组成原理”，8个字节是计算机读取和存储的最佳实践</li>
+</ol>
+<h4 id="3-3-、对象的访问定位"><a href="#3-3-、对象的访问定位" class="headerlink" title="3.3 、对象的访问定位"></a>3.3 、对象的访问定位</h4><p>​    对象的访问由虚拟机决定，主流的有两种：1. 使用句柄、2.直接指针</p>
+<ol>
+<li>句柄访问：<br>java会将堆划分出来一部分内存去作为句柄池，reference中存储的就是对象的句柄地址，句柄中则是包含的对象实例的数据的地址和对象类型数据(如对象的类型，实现的接口、方法、父类、field等)的具体地址信息。<br>例：Object obj = new Object();<br>Object obj 表示一个本地引用，存储在java栈的本地变量表中，表示一个reference类型的数据。<br>new Object()作为实例对象存放在java堆中，同时java堆中还存储了Object类的信息(对象的类型、实现接口、方法等)的具体地址信息，这些地址信息所执行的数据类型存储在方法区</li>
+</ol>
+<p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D-%E4%BD%BF%E7%94%A8%E5%8F%A5%E6%9F%84.png"></p>
+<ol start="2">
+<li>直接指针访问：<br>使用直接指针访问，java对象的内存布局就必须考虑如何放置访问类型数据的相关信息，reference中存储的直接就是对象地址，如果是访问对象本身的话，就不需要多一次间接访问的开销。</li>
+</ol>
+<p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D-%E7%9B%B4%E6%8E%A5%E6%8C%87%E9%92%88.png"></p>
+<p>优劣势：</p>
+<ol>
+<li>句柄：最大的好处是reference中存储的是稳定的句柄地址，在对象被移动(如垃圾回收的移动)时，只会改变句柄中的实例数据指针，而reference本身不需要被修改。</li>
+<li>指针：最大的好处是速度更快，它节省了一次指针定位的时间开销，由于对象的访问在Java中非常频繁，因此这类开销积少成多也是一项即位可观的执行成本。</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li>《深入理解java虚拟机 JVM高级特性与最佳实践》第二部分第二章</li>
+</ul>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jvm/" rel="tag">Jvm</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            JVM垃圾回收
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2021/02/18/Mysql%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93(%E4%BA%8C)/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Mysql命令总结(二)</div>
+      </a>
+    
+  </nav>
+
+  
+   
+<div class="gitalk" id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '933b18299d2753ae26bb',
+    clientSecret: '74fb94f208e1be1d5dd1f57a9f80caaa8054a312',
+    repo: 'blog_gitalk',
+    owner: 'hcxx',
+    admin: ['hcxx'],
+    // id: location.pathname,      // Ensure uniqueness and length less than 50
+    id: md5(location.pathname),
+    distractionFreeMode: false,  // Facebook-like distraction free mode
+    pagerDirection: 'last'
+  })
+
+  gitalk.render('gitalk-container')
+</script>
+
+     
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2020-2021
+        <i class="ri-heart-fill heart_icon"></i> songbirds
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        
+        由 <a href="https://hexo.io" target="_blank">Hexo</a> 强力驱动
+        <span class="division">|</span>
+        主题 - <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+        
+        <span>
+  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
+</span>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/header.svg" alt="待春"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/todo">ToDo</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/towatch">补番表</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+<!-- MathJax -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+
+
+<link rel="stylesheet" href="/css/clipboard.css">
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+<!-- CanvasBackground -->
+
+
+    
+    <div id="music">
+    
+    
+    
+    <iframe frameborder="no" border="1" marginwidth="0" marginheight="0" width="200" height="52"
+        src="//music.163.com/outchain/player?type=2&id=1311347835&auto=0&height=32"></iframe>
+</div>
+
+<style>
+    #music {
+        position: fixed;
+        right: 15px;
+        bottom: 0;
+        z-index: 998;
+    }
+</style>
+    
+  </div>
+</body>
+
+</html>
