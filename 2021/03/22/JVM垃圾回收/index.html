@@ -74,7 +74,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">9.2k</span>
+            <span class="post-count">9.5k</span>
         </span>
     </span>
 
@@ -83,7 +83,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">33 分钟</span>
+            <span class="post-count">34 分钟</span>
         </span>
     </span>
 </div>
@@ -348,7 +348,7 @@
 <h4 id="5-1-Shenandoah收集器"><a href="#5-1-Shenandoah收集器" class="headerlink" title="5.1 Shenandoah收集器"></a>5.1 Shenandoah收集器</h4><p>ToDo</p>
 <table><br></table>
 
-<h4 id="5-2-ZGC"><a href="#5-2-ZGC" class="headerlink" title="5.2 ZGC"></a>5.2 ZGC</h4><p>可参考 <a target="_blank" rel="noopener" href="https://tech.meituan.com/2020/08/06/new-zgc-practice-in-meituan.html">新一代垃圾回收器ZGC的探索与实践</a><br>&emsp;在对吞吐量影响不大的情况，实现对任意堆内存大小垃圾收集停顿时间限制在10毫秒内。JDK11开始。</p>
+<h4 id="5-2-ZGC"><a href="#5-2-ZGC" class="headerlink" title="5.2 ZGC"></a>5.2 ZGC</h4><p>可参考 <a target="_blank" rel="noopener" href="https://tech.meituan.com/2020/08/06/new-zgc-practice-in-meituan.html">新一代垃圾回收器ZGC的探索与实践</a><br>&emsp;在对吞吐量影响不大的情况，实现对任意堆内存大小垃圾收集停顿时间限制在10毫秒内。<br>ZGC可以<strong>降低延迟</strong>(在低延迟：TP999&lt;200ms收益较大)。  但会带来<strong>吞吐量下降</strong>情况(ZGC单代垃圾回收，每次回收处理对象更多，更耗CPU资源；ZGC使用读屏障，需要额外消耗计算资源)。<br>JDK11(Linux)开始。JDK15(Windows)开始。</p>
 <h4 id="1-特点："><a href="#1-特点：" class="headerlink" title="1.  特点："></a>1.  特点：</h4><p>&emsp;&emsp;基于Region(<strong>官方：page/ZPage</strong>)内存布局，染色指针和读屏障解决转移过程中对象的访问问题，同时实现了可并发的<strong>标记-整理</strong>算法，以低延迟位首要目标。</p>
 <h4 id="2-内存布局"><a href="#2-内存布局" class="headerlink" title="2. 内存布局"></a>2. 内存布局</h4><p>&emsp;&emsp;ZGC基于Region堆内存布局，但ZGC的Region具有动态性：动态创建与销毁、动态区域容量大小。</p>
 <ul>
@@ -383,14 +383,28 @@
 <li><strong>并发转移(重分配)阶段</strong>：标记结束后就进入转移阶段，此时地址视图再次被设置为Remapped。如果对象被GC转移线程或者应用线程访问过，那么就将对象的地址视图从M0调整为Remapped。</li>
 </ul>
 <p>&emsp;&emsp;其实，在标记阶段存在两个地址视图M0和M1，上面的过程显示只用了一个地址视图。之所以设计成两个，是为了区别前一次标记和当前标记。也即，第二次进入并发标记阶段后，地址视图调整为M1，而非M0。<br>&emsp;&emsp;着色指针和读屏障技术不仅应用在并发转移阶段，还应用在并发标记阶段：将对象设置为已标记，传统的垃圾回收器需要进行一次内存访问，并将对象存活信息放在对象头中；而在ZGC中，只需要设置指针地址的第42~45位即可，并且因为是寄存器访问，所以速度比访问内存更快。</p>
-<h5 id="4-4-三大优势："><a href="#4-4-三大优势：" class="headerlink" title="4.4 三大优势："></a>4.4 三大优势：</h5><ul>
+<h4 id="5-三大优势："><a href="#5-三大优势：" class="headerlink" title="5. 三大优势："></a>5. 三大优势：</h4><ul>
 <li>某个Region的存活对象被移走后，Region能够立即被释放和重用。(能够”自愈”)。</li>
 <li>大幅减少垃圾收集中的内存屏障使用量，只使用了读屏障，没使用写屏障(染色指针+不支持分代收集)。</li>
 <li>可扩展的存储结构，Linux下64位指针还有18位没有使用。</li>
 </ul>
-<h5 id="4-5-问题与解决方案："><a href="#4-5-问题与解决方案：" class="headerlink" title="4.5 问题与解决方案："></a>4.5 问题与解决方案：</h5><p>&emsp;&emsp;虚拟机重新定义内存中的某几位指针，处理器只会将整个指针都视为内存地址。但x86-64不支持类似SPARC硬件的虚拟地址掩码。因此ZGC采用了<strong>虚拟内存映射</strong>技术。<br>Linux/x86-64平台的ZGC使用<strong>多重映射</strong>将多个不同的虚拟内存地址映射到同一个物理内存地址上，多对一意味着虚拟内存中看到的地址空间比实际的堆内存容量更大。<br><img src="/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/多重映射下的寻址.png" alt="image-20210329214227352" style="zoom:80%;"></p>
-<h5 id="4-6-ZGC调优"><a href="#4-6-ZGC调优" class="headerlink" title="4.6 ZGC调优"></a>4.6 ZGC调优</h5><p>请参考：  <a target="_blank" rel="noopener" href="https://tech.meituan.com/2020/08/06/new-zgc-practice-in-meituan.html">新一代垃圾回收器ZGC的探索与实践</a><br>以下参数来自上面链接的文章，</p>
+<h4 id="6-问题与解决方案："><a href="#6-问题与解决方案：" class="headerlink" title="6. 问题与解决方案："></a>6. 问题与解决方案：</h4><p>&emsp;&emsp;虚拟机重新定义内存中的某几位指针，处理器只会将整个指针都视为内存地址。但x86-64不支持类似SPARC硬件的虚拟地址掩码。因此ZGC采用了<strong>虚拟内存映射</strong>技术。<br>Linux/x86-64平台的ZGC使用<strong>多重映射</strong>将多个不同的虚拟内存地址映射到同一个物理内存地址上，多对一意味着虚拟内存中看到的地址空间比实际的堆内存容量更大。<br><img src="/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/多重映射下的寻址.png" alt="image-20210329214227352" style="zoom:80%;"></p>
+<h4 id="7-ZGC调优"><a href="#7-ZGC调优" class="headerlink" title="7. ZGC调优"></a>7. ZGC调优</h4><p>请参考：  <a target="_blank" rel="noopener" href="https://tech.meituan.com/2020/08/06/new-zgc-practice-in-meituan.html">新一代垃圾回收器ZGC的探索与实践</a><br>以下参数来自上面链接的文章，</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-Xms10G -Xmx10G  -- 堆的最大最小内存：10g(按服务器调整)</span><br><span class="line">-XX:ReservedCodeCacheSize=256m -XX:InitialCodeCacheSize=256m -- CodeCache一般64m或128足够</span><br><span class="line">-XX:+UnlockExperimentalVMOptions -XX:+UseZGC  -- 启用ZGC</span><br><span class="line">-XX:ConcGCThreads=2 -XX:ParallelGCThreads=6  -- 并发回收线程，默认总核1/8； STW阶段使用线程数，默认总核60%</span><br><span class="line">-XX:ZCollectionInterval=120 -XX:ZAllocationSpikeTolerance=5  -- ZGC发生的最小时间间隔，单位秒； ZGC触发自适应算法修正系数，默认2(越大越早触发GC)</span><br><span class="line">-XX:+UnlockDiagnosticVMOptions -XX:-ZProactive  -- 事发启用主动回收，默认开启，这里参数表示关闭</span><br><span class="line">-Xlog:safepoint,classhisto*=trace,age*,gc*=info:file=/opt/logs/logs/gc-%t.log:time,tid,tags:filecount=5,filesize=50m  -- 设置GC日志的内容、格式、位置、日志大小</span><br></pre></td></tr></table></figure>
+<table><br></table>
+
+<h3 id="6-垃圾收集器的选择"><a href="#6-垃圾收集器的选择" class="headerlink" title="6. 垃圾收集器的选择"></a>6. 垃圾收集器的选择</h3><ul>
+<li>如果是数据分析、科学计算，目标是尽快算出结果，则应该关注吞吐量。</li>
+<li>如果是SLA应用(网络服务提供)，停顿时间影响服务质量，延迟是关注点。</li>
+<li>客户端应用或者嵌入式应用，应该关注垃圾收集器的占用内存。</li>
+</ul>
+<p>在此基础上应该考虑JDK的发行商、JDK版本。</p>
+<p>例如：面向用户提供服务或者软件解决方案</p>
+<ul>
+<li>如果有充足的预算，没有调优经验：可以考虑商业的Zing VM。</li>
+<li>使用较新的硬件与JDK，可以考虑ZGC。</li>
+<li>如果是遗留系统，根据内存规模衡量：4GB~6GB堆内存，推荐CMS，对于更大的堆，可以考虑G1。</li>
+</ul>
 <table><br></table>
 
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
