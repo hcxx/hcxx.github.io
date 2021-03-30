@@ -8,6 +8,35 @@
 ]]></content>
   </entry>
   <entry>
+    <title>HotSpot的细节实现</title>
+    <url>/2021/03/30/HotSpot%E7%9A%84%E7%BB%86%E8%8A%82%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<p>HotSpot的细节实现 (读书笔记)</p>
+<a id="more"></a>
+
+<h3 id="1-根节点-GC-Roots-枚举"><a href="#1-根节点-GC-Roots-枚举" class="headerlink" title="1. 根节点(GC Roots)枚举"></a>1. 根节点(GC Roots)枚举</h3><blockquote>
+<p>枚举出所有GC Roots根节点</p>
+</blockquote>
+<p>&emsp;&emsp;可以作为GC Roots的节点主要有：全局性的引用与上下文执行，详见<a href="/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="JVM垃圾回收">JVM垃圾回收</a>的可达性分析小节。目前，所有收集器进行<strong>根节点(GC Roots)枚举</strong>必须STW。现在可达性分析算法耗时查找引用链可以与用户线程一起并发。<br>&emsp;&emsp;目前的Java虚拟机使用准确式垃圾回收集，所以当用户线程1后，并不需要检查完所有上下文和全局引用位置，虚拟机应当<strong>直接得到哪些地方存放对象引用</strong>。HotSpot使用OopMap的数据结构。(并不需要真的全部从方法区等GC Roots开始查找)。</p>
+<h3 id="2-安全点-SafePoint"><a href="#2-安全点-SafePoint" class="headerlink" title="2. 安全点(SafePoint)"></a>2. 安全点(SafePoint)</h3><blockquote>
+<p>在”特定的位置”记录修改引用关系的指令</p>
+</blockquote>
+<p>&emsp;&emsp;在程序运行期间很多指令都是有可能修改引用关系的，即要修改OopMap，如果对每一条指令都生成OopMap，将会需要大量的空间存储数据结构。因此设置了SafePoint去强制用户程序执行到SafePoint暂停开始处理OopMap 并GC。<br>&emsp;&emsp;安全点位置的选取基本上是以“是否具有让程序长时间执行的特征”为标准进行选定的。(“长时间执行”的最明显特征就是指令序列的复用，与指令长短无关。例如方法调用、循环跳转、异常跳转 等都属于指令序列复用，所以只有具有这些功能的指令才会产生安全点)。</p>
+<p>&emsp;&emsp;需要考虑所有线程都在安全点停顿：<strong>抢先式中断、主动式中断</strong>。</p>
+<ul>
+<li>抢先式中断：GC时先中断所有用户线程，如果发现有线程没有到达安全点，恢复执行，直到所有线程到安全点(目前几乎不用)</li>
+<li>主动式中断：GC时，不直接对线程操作，记录一个标志，各线程不断轮询这个标志(标志与安全点重合)，一旦发现中断标志为真时，在自己最近的中断点主动中断挂起。</li>
+</ul>
+<p>HotSpot为了提高轮询的效率，使用内存保护陷阱方式，将轮询操作精简至汇编指令。<br><strong>内存保护陷阱</strong>：需要暂停用户线程，把xx内存页设置不可读，执行test指令会产生一个自陷异常信号，被预先注册的异常挂起等待。</p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>Jvm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo编辑相关</title>
     <url>/2021/03/22/hexo%E7%BC%96%E8%BE%91%E7%9B%B8%E5%85%B3/</url>
     <content><![CDATA[<p>记录hexo常用操作</p>
@@ -28,7 +57,7 @@
   <entry>
     <title>JVM垃圾回收</title>
     <url>/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</url>
-    <content><![CDATA[<p>本篇文章简单介绍JVM的GC</p>
+    <content><![CDATA[<p>JVM的GC读书笔记</p>
 <a id="more"></a>
 
 <ul>
@@ -342,11 +371,18 @@
 <li>   <a href="https://tech.meituan.com/2020/08/06/new-zgc-practice-in-meituan.html">新一代垃圾回收器ZGC的探索与实践</a></li>
 </ul>
 ]]></content>
+      <categories>
+        <category>后端</category>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>Jvm</tag>
+      </tags>
   </entry>
   <entry>
     <title>Java内存区域</title>
     <url>/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/</url>
-    <content><![CDATA[<p>Java的内存区域在jdk1.6时发生了变化，这里主要介绍jdk1.8的内存区域，同时会指明发生了那些变化。</p>
+    <content><![CDATA[<p>Java的内存区域在jdk1.6时发生了变化，这里主要介绍jdk1.8的内存区域，同时会指明发生了那些变化。(读书笔记)</p>
 <a id="more"></a>
 
 <h3 id="一、运行时的数据区域"><a href="#一、运行时的数据区域" class="headerlink" title="一、运行时的数据区域"></a>一、运行时的数据区域</h3><h4 id="1-内存区域划分图示"><a href="#1-内存区域划分图示" class="headerlink" title="1. 内存区域划分图示"></a>1. 内存区域划分图示</h4><h5 id="1-1-JDK1-7之前："><a href="#1-1-JDK1-7之前：" class="headerlink" title="1.1 JDK1.7之前："></a>1.1 <strong>JDK1.7之前</strong>：</h5><p><img src="/2021/02/22/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/JDK1.6%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%88%92%E5%88%86.png" alt="JDK1.6内存区域划分"></p>
