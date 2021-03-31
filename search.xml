@@ -17,6 +17,8 @@
 <p>枚举出所有GC Roots根节点</p>
 </blockquote>
 <p>&emsp;&emsp;可以作为GC Roots的节点主要有：全局性的引用与上下文执行，详见<a href="/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" title="JVM垃圾回收">JVM垃圾回收</a>的可达性分析小节。目前，所有收集器进行<strong>根节点(GC Roots)枚举</strong>必须STW。现在可达性分析算法耗时查找引用链可以与用户线程一起并发。<br>&emsp;&emsp;目前的Java虚拟机使用准确式垃圾回收集，所以当用户线程1后，并不需要检查完所有上下文和全局引用位置，虚拟机应当<strong>直接得到哪些地方存放对象引用</strong>。HotSpot使用OopMap的数据结构。(并不需要真的全部从方法区等GC Roots开始查找)。</p>
+<table><br></table>
+
 <h3 id="2-安全点-SafePoint"><a href="#2-安全点-SafePoint" class="headerlink" title="2. 安全点(SafePoint)"></a>2. 安全点(SafePoint)</h3><blockquote>
 <p>在”特定的位置”记录修改引用关系的指令</p>
 </blockquote>
@@ -27,6 +29,80 @@
 <li>主动式中断：GC时，不直接对线程操作，记录一个标志，各线程不断轮询这个标志(标志与安全点重合)，一旦发现中断标志为真时，在自己最近的中断点主动中断挂起。</li>
 </ul>
 <p>HotSpot为了提高轮询的效率，使用内存保护陷阱方式，将轮询操作精简至汇编指令。<br><strong>内存保护陷阱</strong>：需要暂停用户线程，把xx内存页设置不可读，执行test指令会产生一个自陷异常信号，被预先注册的异常挂起等待。</p>
+<table><br></table>
+
+<h3 id="3-安全区域"><a href="#3-安全区域" class="headerlink" title="3. 安全区域"></a>3. 安全区域</h3><blockquote>
+<p>指能够确保在某一段代码片段之中，引用关系不会发生变化，因此，在这个区域中任意地方开始垃圾收集都是安全的。我们也可以把安全区域看作被扩展拉伸了的安全点。</p>
+</blockquote>
+<p>&emsp;&emsp;长时间不执行的某段代码，该线程无法响应虚拟机的中断请求，必须引入安全区域(Safe Region)解决。</p>
+<p>&emsp;&emsp;当用户线程执行到<strong>安全区域</strong>里面的代码时，首先标识自己进入安全区域。垃圾收集时，不需要处理这些安全区域的线程。当线程离开安全区域，要检查虚拟机是否已经完成根节点枚举。如果完成，线程正常继续执行，否则一直等待，直到收到可以离开安全区域的信号。</p>
+<table><br></table>
+
+<h3 id="4-记忆集与卡表"><a href="#4-记忆集与卡表" class="headerlink" title="4. 记忆集与卡表"></a>4. 记忆集与卡表</h3><h4 id="4-1-记忆集"><a href="#4-1-记忆集" class="headerlink" title="4.1 记忆集"></a>4.1 记忆集</h4><blockquote>
+<p>记忆集：记录从非收集区域指向收集区域的指针集合的抽象数据结构。</p>
+</blockquote>
+<p>&emsp;&emsp;记忆集是为了解决对象跨代引用的问题，新生代建立的数据结构，避免把老年代加入GC Roots扫描范围。如果不考虑效率和成本，最简单的实现可以用非收集区域中所有跨代引用的对象数组实现。垃圾收集器不需要这么完整的记录精度。</p>
+<ul>
+<li>字长精度：每个记录精确到一个机器字长(处理器寻址位，如32位、64位)，该字包含跨代指针。</li>
+<li>对象精度：每个记录精确到一个对象，该对象字段含有一个跨代指针。</li>
+<li>卡精度：每个记录精确到一块内存区域，该区域含有跨代指针。</li>
+</ul>
+<h4 id="4-2-卡表"><a href="#4-2-卡表" class="headerlink" title="4.2 卡表"></a>4.2 卡表</h4><blockquote>
+<p>上面的卡精度就是用卡表实现的记忆集，<strong>卡表就是记忆集的一种具体体现</strong>，它定义了记忆集的记录精度、与堆内存映射的关系(卡表与记忆集类比HashMap与Map的关系记忆)</p>
+</blockquote>
+<p>&emsp;&emsp;卡表的最简单的形式可以只是一个字节数组，HotSpot默认卡表逻辑</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CARD_TABLE [this address &gt;&gt; 9] &#x3D; 0;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;字节数组CARD_TABLE的每一个元素都对应着其表示区域中一块大小的内存块，这个内存块被称作”<strong>卡页</strong>“(Card Page)。一般卡页都是$2^n$字节数。如上代码，HotSpot虚拟机使用的卡页是$2^9$，即512字节(地址右移9位，地址除以$2^9$)。<br>如果<strong>卡表</strong>标识内存区域的起始地址是0x0000的话，数组CARD_TABLE的第0、1、2号元素，分别对应了 地址范围为0x0000～0x01FF、0x0200～0x03FF、0x0400～0x05FF的卡页内存块。</p>
+<img src="/2021/03/30/HotSpot%E7%9A%84%E7%BB%86%E8%8A%82%E5%AE%9E%E7%8E%B0/卡表对卡页寻址.png" alt="卡表对卡页寻址" style="zoom:80%;">
+
+<p>&emsp;&emsp;一个卡页的内存中通常包含不止一个对象，只要卡页内有一个（或更多）对象的字段存在着跨代 指针，那就将对应卡表的数组元素的值标识为1，称为这个元素变脏（Dirty），没有则标识为0。在垃 圾收集发生时，只要筛选出卡表中变脏的元素，就能轻易得出哪些卡页内存块中包含跨代指针，把它们加入GC Roots中一并扫描。</p>
+<table><br></table>
+
+<h3 id="5-写屏障"><a href="#5-写屏障" class="headerlink" title="5. 写屏障"></a>5. 写屏障</h3><p>&emsp;&emsp;使用记忆集缩减GC Roots扫描范围后，还需要解决<strong>卡表</strong>的元素维护问题，例如它们何时变脏、谁把它们变脏。</p>
+<ul>
+<li>何时变脏：有其他分代区域对象引用本区域对象时，卡表变脏。</li>
+<li>谁操作：写屏障(Writte Barrier)。</li>
+</ul>
+<blockquote>
+<p>写屏障：看作虚拟机层面对”引用类型字段赋值”这个动作的AOP切面，在引用对象赋值时会产生一个环形通知，供程序执行额外动作。直至G1收集器出现之前，其他收集器都只用到了写后屏障。</p>
+</blockquote>
+<p>&emsp;&emsp;开启写屏障会导致每次引用更新产生额的开销。<br>&emsp;&emsp;卡表在高并发场景下面临”伪共享”问题：现代处理器的缓存系统是以缓存行为单位存储的，当多线程修改互相独立的变量时，如果这些变量恰好位于同一个缓存行，会彼此影响(写回、无效化、同步)，导致性能降低。<br>如果处理器的缓存行大小为64字节，由于一个卡表元素占1个字节，64个卡表元素将共享同一个缓存行，这64个卡表元素对应的卡页总内存为32KB(64*512字节)。如果不同线程更新的对象正好处于32KB的内存区域，导致更新卡表时正好写入同一个缓存而影响性能。</p>
+<p>避免伪共享问题：先检查卡表标记，只有当卡表元素未被标记时才将其变脏。在JDK 7之后，HotSpot虚拟机增加了一个新的参数-XX：+UseCondCardMark，用来决定是否开启 卡表更新的条件判断。开启会增加一次额外判断的开销，但能够避免伪共享问题。</p>
+<table><br></table>
+
+<h3 id="6-并发的可达性分析"><a href="#6-并发的可达性分析" class="headerlink" title="6. 并发的可达性分析"></a>6. 并发的可达性分析</h3><blockquote>
+<p>可达性分析理论上要求全部过程都基于一个能保证一致性的快照中才能进行分析。意味着要全程STW。</p>
+</blockquote>
+<p>&emsp;&emsp;在根节点枚举中，由于OopsMap的存在，停顿相对固定，不与堆相关。但是GC Roots往下遍历耗时依旧与Java堆成正比例关系。</p>
+<p>&emsp;&emsp;为生么必须保证一致快照才能遍历？</p>
+<h4 id="6-1-三色标记："><a href="#6-1-三色标记：" class="headerlink" title="6.1 三色标记："></a>6.1 三色标记：</h4><ul>
+<li>白色：对象尚未被垃圾收集器访问过。如果在分析结束阶段，仍是白色，则不可达。</li>
+<li>黑色：对象已经被垃圾收集器访问过，且该对象的所有引用都访问过，黑色对象不可能直接指向白色对象。</li>
+<li>灰色：对象已经被垃圾收集器访问过，但对象上至少还有一个引用每一被扫描过。</li>
+</ul>
+<h4 id="5-2-三色标记的过程："><a href="#5-2-三色标记的过程：" class="headerlink" title="5.2 三色标记的过程："></a>5.2 三色标记的过程：</h4><p>&emsp;&emsp;首先GCRots被染成灰色，从GCRoots向下遍历。将GCRoots指向白色的对象在染成灰色，在该GCRoots遍历完直接指向的对象后，该GCRoots染成黑色。再从被染灰色的对象向下遍历，重复上面的过程，遍历完成后。剩余的白色对象被判断为垃圾。</p>
+<h4 id="5-3-并发三色标记的问题："><a href="#5-3-并发三色标记的问题：" class="headerlink" title="5.3 并发三色标记的问题："></a>5.3 并发三色标记的问题：</h4><p>&emsp;&emsp;如果用户收集线程与GC线程并发工作， 可能会出现两种问题。</p>
+<ol>
+<li>将原本消亡的对象标记为存活：<br>GC线程将某对象标记为黑色，这时用户线程将该对象的引用去除，导致该对象实际应该消亡，但是被标记为黑色，导致存活。(可以忍受，称为浮动垃圾)。(独立的非GCRoots的黑色对象)</li>
+<li>将原本存活的对象标记为垃圾：<ol>
+<li>赋值器插入了一条或多条从黑色对象到白色对象的新引用。(添加黑色指向白色)</li>
+<li>赋值器删除了全部从灰色对象到该白色对象的直接或间接引用。(删除灰色指向白色的链接)</li>
+</ol>
+</li>
+</ol>
+<p>&emsp;&emsp;由于GC不会再从黑色对象开始遍历，所以该白色对象不会再被标记。标记完成后，该对象被误判为垃圾。(不可忍受)，需要两个条件同时满足。</p>
+<p><img src="/2021/03/30/HotSpot%E7%9A%84%E7%BB%86%E8%8A%82%E5%AE%9E%E7%8E%B0/%E5%AD%98%E6%B4%BB%E5%AF%B9%E8%B1%A1%E8%AF%AF%E5%88%A4%E4%B8%BA%E6%AD%BB%E4%BA%A1.png"></p>
+<h4 id="5-4-三色并发标记问题的解决"><a href="#5-4-三色并发标记问题的解决" class="headerlink" title="5.4 三色并发标记问题的解决"></a>5.4 三色并发标记问题的解决</h4><blockquote>
+<p>由于必须同时满足两个条件，只需破坏其中一个即可。<br>增量更新与原始快照。</p>
+</blockquote>
+<h5 id="5-4-1-增量更新"><a href="#5-4-1-增量更新" class="headerlink" title="5.4.1 增量更新"></a>5.4.1 增量更新</h5><p>&emsp;&emsp;增量更新破坏的是第一个条件，当黑色对象插入新的指向白色对象的引用关系时，将这个新的插入记录下来，等并发扫描结束后，再将这些记录过的引用关系中的黑色对象为根，重新扫描一次。(一旦黑色对象指向指向白色对象，将黑色对象转变为灰色)。</p>
+<h5 id="5-4-2-原始快照"><a href="#5-4-2-原始快照" class="headerlink" title="5.4.2 原始快照"></a>5.4.2 原始快照</h5><p>&emsp;&emsp;原始快照破坏第二个条件，当灰色对象删除指向白色对象的引用时，将这个要删除的引用记录下来，在并发扫描结束后，将这些记录过的灰色对象为根，从新扫描一次。(无论引用关系删除与否，按刚开始扫描的那一刻的对象快照搜索)。</p>
+<h4 id="5-5-三色标记补充"><a href="#5-5-三色标记补充" class="headerlink" title="5.5 三色标记补充"></a>5.5 三色标记补充</h4><p>&emsp;&emsp;以上对引用关系的插入或删除，都是通过写屏障实现的。例如CMS是基于增量更新做并发标记，G1、Shenandoah使用原始快照。</p>
+<table><br></table>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li>《深入理解Java虚拟机 JVM高级特性与最佳实践》第二部分第三章</li>
+</ul>
 ]]></content>
       <categories>
         <category>后端</category>
@@ -172,7 +248,7 @@
 <li><strong>无法收集浮动垃圾</strong>：<br>(浮动垃圾：并发标记/清理阶段，用户线程运行，垃圾对象产生，CMS这次GC无法处理，只能下次处理)。<br>由于无法收集浮动垃圾可能出现：”Concurrent Mode Failure”失败而导致STW的Full GC产生。<br>JDk1.6时，CMS收集器的启动阈值<code>老年代使用空间</code>默认提升至92%，要是CMS运行期间，预留的内存无法满足分配对象，会出现一次”并发失败”，导致冻结用户线程(STW)，临时启用Serial Old收集器。请根据实际需要设置参数<code>-XX: CMSInitiatingOccupancyFraction</code>参数(启用阈值)</li>
 <li><strong>标记清除，产生空间碎片</strong>：<br><code>-XX: +UseCMS-CompactAtFullCollection</code>默认开启，JDK9废弃，CMS收集器不得不FullGC时开启合并整理(STW)<br><code>-XX: CMSFullGCsBeforeCompaction</code>JDK9废弃，表示CMS执行n次FullGC后，整理，默认为0：每次FullGC会碎片整理。</li>
 </ul>
-<h4 id="3-5-7-G1收集器"><a href="#3-5-7-G1收集器" class="headerlink" title="3.5.7 G1收集器"></a>3.5.7 G1收集器</h4><p>&emsp;&emsp;G1(Garbage First)收集器主要是面向服务端的收集器，开创<strong>局部收集思路</strong>和<strong>基于Region的内存布局形式</strong>，主要针对配备<strong>多颗处理器及大容量内存($\geq$6g)**的机器。 以极高概率满足GC停顿时间要求的同时,还具备高吞吐量性能特征。G1的出现</strong>(JDK7正式出现)<strong>导致<code>CMS</code>被官方声明为不推荐的收集器，同时用来取代<code>Parallel Scavenge</code>加<code>Parallel Old</code>组合。G1是一个面向整堆(新生代+老年代)的收集器。<br>&emsp;&emsp;G1虽然仍是遵循分代收集理论设计的，但是：G1把连续的Java堆划分为多个相等的独立区域(Region)，每个Region都可以根据需要扮演Eden空间、Survivor空间或者老年代，G1能够对扮演不同角色的Region采用不同的策略去处理。<br>&emsp;&emsp;Region种有一类特殊的<code>Humongous</code>区域，专门存储</strong>大对象**(大小超过一个Region容量的一半)，每个Region可以通过参数<code>-XX:G1HeapRegionSize</code>设置，取值1MB~32MB，且为$2^n$，对于超过整个Region的大对象，会被存放在N个连续的<code>Humongous Region</code>中，G1大多数把<code>Humongous Region</code>作为老年代的一部分看待。</p>
+<h4 id="3-5-7-G1收集器"><a href="#3-5-7-G1收集器" class="headerlink" title="3.5.7 G1收集器"></a>3.5.7 G1收集器</h4><p>&emsp;&emsp;G1(Garbage First)收集器主要是面向服务端的收集器，开创<strong>局部收集思路</strong>和<strong>基于Region的内存布局形式</strong>，主要针对配备<strong>多颗处理器及大容量内存</strong>($\geq$6g)的机器。 以极高概率满足GC停顿时间要求的同时,还具备高吞吐量性能特征。G1的出现(<strong>JDK7正式出现</strong>)导致<code>CMS</code>被官方声明为不推荐的收集器，同时用来取代<code>Parallel Scavenge</code>加<code>Parallel Old</code>组合。G1是一个面向整堆(新生代+老年代)的收集器。<br>&emsp;&emsp;G1虽然仍是遵循分代收集理论设计的，但是：G1把连续的Java堆划分为多个相等的独立区域(Region)，每个Region都可以根据需要扮演Eden空间、Survivor空间或者老年代，G1能够对扮演不同角色的Region采用不同的策略去处理。<br>&emsp;&emsp;Region种有一类特殊的<code>Humongous</code>区域，专门存储<strong>大对象</strong>(大小超过一个Region容量的一半)，每个Region可以通过参数<code>-XX:G1HeapRegionSize</code>设置，取值1MB~32MB，且为$2^n$，对于超过整个Region的大对象，会被存放在N个连续的<code>Humongous Region</code>中，G1大多数把<code>Humongous Region</code>作为老年代的一部分看待。</p>
 <h5 id="1-布局模型："><a href="#1-布局模型：" class="headerlink" title="1. 布局模型："></a>1. 布局模型：</h5><p><img src="/2021/03/22/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/G1%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E5%B8%83%E5%B1%80%E6%A8%A1%E5%9E%8B.png" alt="G1收集器的布局模型"></p>
 <h5 id="2-G1收集器的特点："><a href="#2-G1收集器的特点：" class="headerlink" title="2. G1收集器的特点："></a>2. G1收集器的特点：</h5><ul>
 <li><strong>并行与并发</strong>：G1 能充分利用 CPU、多核环境下的硬件优势，使用多个 CPU（CPU 或者 CPU 核心）来缩短 Stop-The-World 停顿时间。部分其他收集器原本需要停顿 Java 线程执行的 GC 动作，G1 收集器仍然可以通过并发的方式让 java 程序继续执行。</li>
