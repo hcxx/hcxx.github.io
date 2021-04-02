@@ -8,6 +8,32 @@
 ]]></content>
   </entry>
   <entry>
+    <title>数学知识复习与递归简论</title>
+    <url>/2021/04/02/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E5%A4%8D%E4%B9%A0%E4%B8%8E%E9%80%92%E5%BD%92%E7%AE%80%E8%AE%BA/</url>
+    <content><![CDATA[<p>《数据结构与算法分析Java语言描述》第一章1.2与1.3节<strong>读书笔记</strong></p>
+<a id="more"></a>
+
+<h3 id="1-数学知识复习"><a href="#1-数学知识复习" class="headerlink" title="1. 数学知识复习"></a>1. 数学知识复习</h3><h4 id="1-1-指数"><a href="#1-1-指数" class="headerlink" title="1.1 指数"></a>1.1 指数</h4><p>$$X^AX^B=X^{A+B}$$</p>
+<p>$$\frac{X^A}{X^B}=X^{A-B}$$</p>
+<h4 id="1-2对数"><a href="#1-2对数" class="headerlink" title="1.2对数"></a>1.2对数</h4><p>在计算机科学中，除非特别声明。否则所有对数都是以2为底。</p>
+<p><strong>定理1.1</strong>：  $$log_AB=\frac{log_CB}{log_CA}; A,B,C&gt;0,A\ne1$$</p>
+<p><strong>定理1.2</strong>:    $$logAB=logA+logB; A,B&gt;0$$</p>
+<p><strong>推导</strong>：</p>
+<p>$$logA/B=logA-logB$$</p>
+<p>$$log(A^B)=BlogA$$</p>
+<p>$$logX&lt;X对所有的X&gt;0成立$$</p>
+<h4 id="1-3-级数"><a href="#1-3-级数" class="headerlink" title="1.3 级数"></a>1.3 级数</h4><p>$$\sum_{i=0}^n2^i=2^{N+1}-1$$</p>
+<p>$$\sum_{i=0}^nA^i=\frac{A^{N+1}-1}{A-1}$$</p>
+]]></content>
+      <categories>
+        <category>cs基础</category>
+        <category>数据结构与算法</category>
+      </categories>
+      <tags>
+        <tag>数据结构与算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HotSpot的细节实现</title>
     <url>/2021/03/30/HotSpot%E7%9A%84%E7%BB%86%E8%8A%82%E5%AE%9E%E7%8E%B0/</url>
     <content><![CDATA[<p>HotSpot的细节实现 (读书笔记)</p>
@@ -121,7 +147,7 @@
 <h4 id="1-hexo首行缩进："><a href="#1-hexo首行缩进：" class="headerlink" title="1. hexo首行缩进："></a>1. hexo首行缩进：</h4><p>&emsp;&emsp;一个代表一个汉字字符</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&amp;emsp;</span><br></pre></td></tr></table></figure>
 <h4 id="2-hexo文章跳转其他文章"><a href="#2-hexo文章跳转其他文章" class="headerlink" title="2.hexo文章跳转其他文章"></a>2.hexo文章跳转其他文章</h4><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">跳转到一篇名为 Hello-World 的文章</span><br><span class="line">&#123;% post_link Hello-World %&#125;</span><br><span class="line">&#123;% post_link Hello-World 你好世界 %&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3-添加数学公式"><a href="#3-添加数学公式" class="headerlink" title="3. 添加数学公式"></a>3. 添加数学公式</h4><p>&emsp;&emsp;<a href="https://blog.csdn.net/mingzhuo_126/article/details/82722455">数学公式</a>(某CSDN博客)</p>
+<h4 id="3-添加数学公式"><a href="#3-添加数学公式" class="headerlink" title="3. 添加数学公式"></a>3. 添加数学公式</h4><p>&emsp;&emsp;<a href="https://blog.csdn.net/mingzhuo_126/article/details/82722455">数学公式</a>   <a href="https://blog.csdn.net/dabokele/article/details/79577072">博客2</a>      (某CSDN博客)</p>
 <h4 id="4-空行"><a href="#4-空行" class="headerlink" title="4. 空行"></a>4. 空行</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">二选一，推荐上面的</span><br></pre></td></tr></table></figure>
 <h4 id="5-字自定义"><a href="#5-字自定义" class="headerlink" title="5. 字自定义"></a>5. 字自定义</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&#x27;font-size:40px; font-family:微软雅黑; color:red&#x27;</span>&gt;</span>内容<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
 ]]></content>
