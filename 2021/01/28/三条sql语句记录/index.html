@@ -37,7 +37,7 @@
 
   
 
-</head>
+<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
 
 </html>
 
@@ -104,12 +104,10 @@
        
   <p>最近的项目遇到了几条sql语句，觉得算是很常用的，遂记录下来</p>
 <a id="more"></a>
-
-
-
 <p>所用到的表的示例大致如下(数据纯属虚构)</p>
-<p><img src="/2021/01/28/%E4%B8%89%E6%9D%A1sql%E8%AF%AD%E5%8F%A5%E8%AE%B0%E5%BD%95/t_member.png"></p>
-<h2 id="一、统计每个月的总会员数量"><a href="#一、统计每个月的总会员数量" class="headerlink" title="一、统计每个月的总会员数量"></a>一、统计每个月的总会员数量</h2><p>这个需要在controller与业务层进行一定的逻辑，sql层只需要查询每个月的x年x月31日之前的数据即可。具体实现逻辑如下，<strong>假设查询的是近一年的每个月的会员数量：</strong></p>
+<p><img src="/2021/01/28/%E4%B8%89%E6%9D%A1sql%E8%AF%AD%E5%8F%A5%E8%AE%B0%E5%BD%95/t_member.png" alt></p>
+<h2 id="一-统计每个月的总会员数量">一、统计每个月的总会员数量</h2>
+<p>这个需要在controller与业务层进行一定的逻辑，sql层只需要查询每个月的x年x月31日之前的数据即可。具体实现逻辑如下，<strong>假设查询的是近一年的每个月的会员数量：</strong></p>
 <ol>
 <li>在controller层通过日历对象遍历出近一年的数据放入集合中，格式为yyyy-MM;</li>
 </ol>
@@ -122,19 +120,20 @@
 <li>Mysql查询某个日期之前的总人数：</li>
 </ol>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select count(id) from t_member where regTime &amp;lt;= #&#123;value&#125;     ( &amp;lt;  &quot;&lt;&quot;的转义)</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="二、查询男女性别数量"><a href="#二、查询男女性别数量" class="headerlink" title="二、查询男女性别数量"></a>二、查询男女性别数量</h2><ol>
+<h2 id="二-查询男女性别数量">二、查询男女性别数量</h2>
+<ol>
 <li>这个只需要在sql使用即可</li>
 </ol>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">case</span> sex <span class="keyword">when</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">THEN</span> <span class="string">&#x27;男&#x27;</span> <span class="keyword">when</span> <span class="string">&#x27;2&#x27;</span> <span class="keyword">THEN</span> <span class="string">&#x27;女&#x27;</span> <span class="keyword">else</span> <span class="string">&#x27;未知&#x27;</span> <span class="keyword">end</span> <span class="keyword">as</span> name, <span class="built_in">COUNT</span>(id) <span class="keyword">as</span> <span class="string">&#x27;value&#x27;</span> <span class="keyword">FROM</span> t_member <span class="keyword">GROUP</span> <span class="keyword">BY</span> sex;</span><br></pre></td></tr></table></figure>
 <ol start="2">
 <li>查询结果</li>
 </ol>
-<p><img src="/2021/01/28/%E4%B8%89%E6%9D%A1sql%E8%AF%AD%E5%8F%A5%E8%AE%B0%E5%BD%95/%E7%94%B7%E5%A5%B3%E5%8D%A0%E6%AF%94%E7%BB%93%E6%9E%9C.png"></p>
-<h2 id="三、查询会员年龄段人数"><a href="#三、查询会员年龄段人数" class="headerlink" title="三、查询会员年龄段人数"></a>三、查询会员年龄段人数</h2><p><strong>展示0-18岁，18-30岁，30-45岁，45岁以上的人数和占比。</strong></p>
+<p><img src="/2021/01/28/%E4%B8%89%E6%9D%A1sql%E8%AF%AD%E5%8F%A5%E8%AE%B0%E5%BD%95/%E7%94%B7%E5%A5%B3%E5%8D%A0%E6%AF%94%E7%BB%93%E6%9E%9C.png" alt></p>
+<h2 id="三-查询会员年龄段人数">三、查询会员年龄段人数</h2>
+<p><strong>展示0-18岁，18-30岁，30-45岁，45岁以上的人数和占比。</strong></p>
 <ol>
-<li>由于数据库的日期是date类型的，所以between是包括右边界的，18要归纳到18-30岁，所以这里0-18岁只能between 0 and 17；后面的同理。<ul>
+<li>由于数据库的日期是date类型的，所以between是包括右边界的，18要归纳到18-30岁，所以这里0-18岁只能between 0 and 17；后面的同理。
+<ul>
 <li>注：如果是datetime类型，是不过包括右边界的，所以可以用0 between 18；</li>
 </ul>
 </li>
@@ -143,7 +142,7 @@
 <ol start="2">
 <li>查询结果</li>
 </ol>
-<p><img src="/2021/01/28/%E4%B8%89%E6%9D%A1sql%E8%AF%AD%E5%8F%A5%E8%AE%B0%E5%BD%95/%E5%B9%B4%E9%BE%84%E5%8D%A0%E6%AF%94%E7%BB%93%E6%9E%9C.png"></p>
+<p><img src="/2021/01/28/%E4%B8%89%E6%9D%A1sql%E8%AF%AD%E5%8F%A5%E8%AE%B0%E5%BD%95/%E5%B9%B4%E9%BE%84%E5%8D%A0%E6%AF%94%E7%BB%93%E6%9E%9C.png" alt></p>
  
       <!-- reward -->
       
@@ -571,31 +570,16 @@
 
 <!-- MathJax -->
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-      tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-  });
-
-  MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for(i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script>
-  var ayerConfig = {
-    mathjax: true
-  }
-</script>
-
 <!-- Katex -->
+
+
+    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script>
+        
+    
+
 
 <!-- busuanzi  -->
 
