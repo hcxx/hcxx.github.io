@@ -70,7 +70,7 @@
   <ul>
 <li>[ ] <a target="_blank" rel="noopener" href="https://movie.douban.com/subject/30181230/">我们与恶的距离</a></li>
 <li>[ ] <a target="_blank" rel="noopener" href="https://movie.douban.com/subject/30313878/?tag=%E7%83%AD%E9%97%A8&amp;from=gaia">外星也难民</a></li>
-<li>[ ] <a target="_blank" rel="noopener" href="https://movie.douban.com/subject/35363794/?tag=%E7%83%AD%E9%97%A8&amp;from=gaia">DOTA：龙之血</a></li>
+<li>[x] <a target="_blank" rel="noopener" href="https://movie.douban.com/subject/35363794/?tag=%E7%83%AD%E9%97%A8&amp;from=gaia">DOTA：龙之血</a></li>
 <li>[ ] <a target="_blank" rel="noopener" href="https://movie.douban.com/subject/30402296/">天气之子</a></li>
 <li>[ ] <a target="_blank" rel="noopener" href="https://movie.douban.com/subject/30401194/">Hello world</a></li>
 <li>[ ] <a target="_blank" rel="noopener" href="https://movie.douban.com/subject/30274965/">海兽之子</a></li>
@@ -174,13 +174,6 @@
     </ul>
     <ul>
       <li>
-        
-        
-        <span>
-  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
-  <span class="division">|</span>
-  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
-</span>
         
       </li>
     </ul>
@@ -414,6 +407,30 @@
 
 <!-- MathJax -->
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
 <!-- Katex -->
 
 
@@ -426,10 +443,6 @@
 
 
 <!-- busuanzi  -->
-
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
 
 <!-- ClickLove -->
 

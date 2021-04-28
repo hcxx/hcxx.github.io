@@ -104,9 +104,9 @@
        
   <p>《数据结构与算法分析Java语言描述》第一章1.4与1.5节<strong>读书笔记</strong></p>
 <a id="more"></a>
-<h2 id="1-范型">1. 范型</h2>
+<h2 id="1-范型"><a class="markdownIt-Anchor" href="#1-范型"></a> 1. 范型</h2>
 <p>范型机制：如果对象除去基本类型外，其余的实现方法相同，可以用范型实现来描述。</p>
-<h3 id="1-1-使用object表示范型">1.1 使用Object表示范型</h3>
+<h3 id="11-使用object表示范型"><a class="markdownIt-Anchor" href="#11-使用object表示范型"></a> 1.1 使用Object表示范型</h3>
 <p>  Object类是所有类的超类，可以通过Object类实现范型类。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemoryCell</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 通过Object实现范型对象</span></span><br><span class="line">    <span class="keyword">private</span> Object storedValue;</span><br><span class="line">    <span class="comment">// 写：给存储的值赋值，通过Object写入范型对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(Object x)</span> </span>&#123;</span><br><span class="line">        storedValue = x;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 读：返回存储的值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">read</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> storedValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
@@ -114,28 +114,28 @@
 <li>不能使用基本类型(8大类型)，只有引用类型(类、接口类型、数组类型、枚举类型)与Object相容。(这里测试实际是可以的(Java8)：<strong>自动拆装箱</strong>)</li>
 </ul>
 <table><br></table>
-<h3 id="1-2-包装类型">1.2 包装类型</h3>
+<h3 id="12-包装类型"><a class="markdownIt-Anchor" href="#12-包装类型"></a> 1.2 包装类型</h3>
 <p>  Java提供了8种基本类型，这8种类型不能与Objecct相容，所以Java提供了对应的包装类。</p>
 <table><br></table>
-<h3 id="1-3-使用接口表示范型">1.3 使用接口表示范型</h3>
+<h3 id="13-使用接口表示范型"><a class="markdownIt-Anchor" href="#13-使用接口表示范型"></a> 1.3 使用接口表示范型</h3>
 <p>  只有在使用Object类中已有的方法能够表示所执行的操作时，才能使用Object作为范型类工作。(与代码对象类型无关)。<br>
   例如找出Object数组中的最大项，与类型无关，只能实现Comparable接口，重写compareTo方法。</p>
 <table><br></table>
-<h3 id="1-5-利用java范型特性">1.5 利用Java范型特性</h3>
+<h3 id="15-利用java范型特性"><a class="markdownIt-Anchor" href="#15-利用java范型特性"></a> 1.5 利用Java范型特性</h3>
 <blockquote>
 <p>Java支持范型类与范型方法</p>
 </blockquote>
-<h4 id="1-5-1-简单范型类和接口">1.5.1 简单范型类和接口</h4>
+<h4 id="151-简单范型类和接口"><a class="markdownIt-Anchor" href="#151-简单范型类和接口"></a> 1.5.1 简单范型类和接口</h4>
 <p>  在类上使用&lt;范型&gt;，表示一个范型类。如下是前面的MemoryCell类范型版代码。也可以实现范型接口。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericMemoryCell</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// 指定范型为T，new类的对象时候再指定类型，注意不能是int类的基本类型</span></span><br><span class="line">    <span class="keyword">private</span> T storedValue;</span><br><span class="line">    <span class="comment">// 读：返回存储的值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">read</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> storedValue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 写：给存储的值赋值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(T x)</span> </span>&#123;</span><br><span class="line">        storedValue = x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="1-5-2-自动拆箱-装箱">1.5.2 自动拆箱/装箱</h4>
+<h4 id="152-自动拆箱装箱"><a class="markdownIt-Anchor" href="#152-自动拆箱装箱"></a> 1.5.2 自动拆箱/装箱</h4>
 <p>自动装箱：如果一个基本类型，例如int被传递到一个需要Integer对象的地方，编译器幕后插入对Integer构造方法调用。<br>
 自动拆箱：一个包装类型，例如Integer被放到需要int类型的地方，则编译器幕后调用一个intValue方法。<br>
 注意：需要指定范型的地方，仍是不可改变的。</p>
-<h4 id="1-5-4-带有限制的通配符">1.5.4 带有限制的通配符</h4>
+<h4 id="154-带有限制的通配符"><a class="markdownIt-Anchor" href="#154-带有限制的通配符"></a> 1.5.4 带有限制的通配符</h4>
 <p>  为了解决范型的一些问题，Java使用 通配符：<code>?</code>来解决这些问题，如下方法表示范型必须是Shape类或者其子类。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 该方法的集合参数的范型必须是Shape类或者Shape类的子类</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">totalArea</span><span class="params">(Collection&lt;? extends Shape&gt; arr)</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="1-5-6-类型界限">1.5.6 类型界限</h4>
+<h4 id="156-类型界限"><a class="markdownIt-Anchor" href="#156-类型界限"></a> 1.5.6 类型界限</h4>
 <p>  例如，想实现如下代码，编译器不能证明在第行对compareTo的调用是合法的。只有在<code>T</code>是Comparable的情况下才能保证compareTo存在。可以使用<code>类型界限</code>解决。在&lt;&gt;内，指定参数必须具有的性质。<br>
 <strong>错误的代码</strong>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FindMaxTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 返回T类型的对象</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">findMax</span><span class="params">(T[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="comment">// 此处报错，T类型的对象没有实现Comparable接口，不可直接比较</span></span><br><span class="line">            <span class="keyword">if</span> (arr[i].compareTo(arr[maxIndex]) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                maxIndex = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[maxIndex];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -144,9 +144,9 @@
   <code>&lt;T extends Comparable&lt;T&gt;&gt;</code>：T必须继承Comparable接口<br>
   T extends决定了传入对象的上限是T(只能是T或子类)，&lt;? super T&gt;决定了下限是T(最少T实现了Comparable)</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FindMaxTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 返回T类型的对象,这里使用如下范型，规定了T必须继承Comparable接口或者父类继承了Comparable接口</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Comparable&lt;? <span class="keyword">super</span> T&gt;&gt; <span class="function">T <span class="title">findMax</span><span class="params">(T[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[i].compareTo(arr[maxIndex]) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                maxIndex = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[maxIndex];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="1-5-7-类型擦除">1.5.7 类型擦除</h4>
+<h4 id="157-类型擦除"><a class="markdownIt-Anchor" href="#157-类型擦除"></a> 1.5.7 类型擦除</h4>
 <p>  Java中的范型是伪范型，只在源码中存在，只在源码中有效，有编译检查。一旦编译通过，Java的范型就会被擦除，成为原生类型，称为类型擦除。</p>
-<h4 id="1-5-8-范型的限制">1.5.8 范型的限制</h4>
+<h4 id="158-范型的限制"><a class="markdownIt-Anchor" href="#158-范型的限制"></a> 1.5.8 范型的限制</h4>
 <p>由于类型擦除的原因，下面的每一个限制都必须遵守。</p>
 <p><strong>基本类型</strong></p>
 <p> 基本类型不能用作类型参数，如<code>GenericMemoryCell&lt;int&gt;</code>非法，必须使用包装类。</p>
@@ -160,11 +160,11 @@
 <p><strong>不能实例化参数化类型数组</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ClassCastExceptionTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 此处后面部分指定范型报错,只能不指定范型类型</span></span><br><span class="line">        GenericMemoryCell&lt;String&gt;[] arr1 = <span class="keyword">new</span> GenericMemoryCell[<span class="number">10</span>];</span><br><span class="line">        GenericMemoryCell&lt;Double&gt; cell = <span class="keyword">new</span> GenericMemoryCell&lt;&gt;();</span><br><span class="line">        cell.write(<span class="number">4.5</span>);</span><br><span class="line">        Object[] arr2 = arr1;</span><br><span class="line">        <span class="comment">// 此处本应该报错，为ArrayStoreException,因为上面的范型规定为String，结果存入了Double，</span></span><br><span class="line">        <span class="comment">// 可是由于类型擦除后，数组类型皆为GenericMemoryCell[]，加入数组中的类型也是GenericMemoryCell，不会报错。</span></span><br><span class="line">        arr2[<span class="number">0</span>] = cell;</span><br><span class="line">        <span class="comment">// 此处报错，Double不能转String，上面的不报错，因为上面的类型擦除后都是GenericMemoryCell类型。</span></span><br><span class="line">        String s = arr1[<span class="number">0</span>].read();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <table><br></table>
-<h2 id="2-函数对象">2 函数对象</h2>
+<h2 id="2-函数对象"><a class="markdownIt-Anchor" href="#2-函数对象"></a> 2 函数对象</h2>
 <blockquote>
 <p>定义一个只有方法而没有数据的类，然后把这个类的对象传递给别的方法，该对象通常叫做函数对象</p>
 </blockquote>
-<h3 id="2-1-简单实现">2.1 简单实现</h3>
+<h3 id="21-简单实现"><a class="markdownIt-Anchor" href="#21-简单实现"></a> 2.1 简单实现</h3>
 <p>  如下是一个传递Comparator类型的函数对象的实现</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetTheMaxNum</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String[] arr = &#123;<span class="string">&quot;ZEBRA&quot;</span>, <span class="string">&quot;alligator&quot;</span>, <span class="string">&quot;crocodile&quot;</span>&#125;;</span><br><span class="line">        System.out.println(findMax(arr, <span class="keyword">new</span> CaseInsensitiveCompare()));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 比较方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt;<span class="function">T <span class="title">findMax</span><span class="params">(T[] arr, Comparator&lt;? <span class="keyword">super</span> T&gt; cmp)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            <span class="comment">// 因为比较器是升序，所以这里大于0的意思是arr[i]大于arr[index]</span></span><br><span class="line">            <span class="keyword">if</span> (cmp.compare(arr[i], arr[maxIndex]) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                maxIndex = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr[maxIndex];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定比较器，范型指定传入的类型是String</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">CaseInsensitiveCompare</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(String  o1, String  o2)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> o1.compareToIgnoreCase(o2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
  
@@ -243,6 +243,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2021/04/05/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%A6%81%E5%88%86%E6%9E%90%E7%9A%84%E9%97%AE%E9%A2%98/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            数学基础与要分析的问题
+          
+        </div>
+      </a>
     
     
       <a href="/2021/04/02/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E5%A4%8D%E4%B9%A0%E4%B8%8E%E9%80%92%E5%BD%92%E7%AE%80%E8%AE%BA/" class="article-nav-link">
@@ -328,13 +337,6 @@
     </ul>
     <ul>
       <li>
-        
-        
-        <span>
-  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></s>
-  <span class="division">|</span>
-  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
-</span>
         
       </li>
     </ul>
@@ -585,6 +587,30 @@
 
 <!-- MathJax -->
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
 <!-- Katex -->
 
 
@@ -597,10 +623,6 @@
 
 
 <!-- busuanzi  -->
-
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
 
 <!-- ClickLove -->
 
