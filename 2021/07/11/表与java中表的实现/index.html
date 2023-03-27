@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/avatar.svg">
+  
+  <title>表与java中表的实现 | Songbirds</title>
+  <meta name="author" content="songbirds" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="数据结构与算法" />
+  
+  <meta name="description" content="《数据结构与算法分析Java语言描述》第二章3.1到3.5节读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="表与java中表的实现">
+<meta property="og:url" content="http://songbirds.top/2021/07/11/%E8%A1%A8%E4%B8%8Ejava%E4%B8%AD%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Songbirds">
+<meta property="og:description" content="《数据结构与算法分析Java语言描述》第二章3.1到3.5节读书笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://songbirds.top/images/avatar.svg">
+<meta property="article:published_time" content="2021-07-11T08:42:17.000Z">
+<meta property="article:modified_time" content="2022-02-27T08:40:55.045Z">
+<meta property="article:author" content="songbirds">
+<meta property="article:tag" content="数据结构与算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://songbirds.top/images/avatar.svg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner.webp');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.2.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                        
+                                            <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/tags/"><i class="fa fa-tags"></i>标签</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/friends/"><i class="fa fa-paw"></i>友链</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/todo/"><i class="fa fa-hourglass-start"></i>TODO</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/bangumis/"><i class="fa fa-television"></i>追番</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                                        
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Songbirds</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Songbirds</h2> <br />
+                        <span>春</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://songbirds.top/2021/07/11/%E8%A1%A8%E4%B8%8Ejava%E4%B8%AD%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">表与java中表的实现</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2021-07-11T08:42:17.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2021-07-11</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">songbirds</span>
+                </li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~16.50K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1645951255045"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">3.1 抽象数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%E8%A1%A8adt"><span class="toc-number">2.</span> <span class="toc-text">3.2表ADT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1%E8%A1%A8%E7%9A%84%E7%AE%80%E5%8D%95%E6%95%B0%E7%BB%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.1.</span> <span class="toc-text">3.2.1表的简单数组实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2%E7%AE%80%E5%8D%95%E9%93%BE%E8%A1%A8"><span class="toc-number">2.2.</span> <span class="toc-text">3.2.2简单链表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-java-collections-api%E4%B8%AD%E7%9A%84%E8%A1%A8"><span class="toc-number">3.</span> <span class="toc-text">3.3 Java Collections API中的表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-collections%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.1.</span> <span class="toc-text">3.3.1 Collections接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-iterator%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">3.3.2 Iterator接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-list%E6%8E%A5%E5%8F%A3%E4%B8%8E%E7%BB%A7%E6%89%BF%E7%9A%84%E7%B1%BB"><span class="toc-number">3.3.</span> <span class="toc-text">3.3.3 List接口与继承的类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-likedlist%E4%B8%AD%E7%9A%84remove%E6%96%B9%E6%B3%95"><span class="toc-number">3.4.</span> <span class="toc-text">3.3.4 LikedList中的remove方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-5-listiterator%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.5.</span> <span class="toc-text">3.3.5 ListIterator接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-arraylist%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">3.4 ArrayList类的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E5%9F%BA%E6%9C%AC%E7%B1%BB"><span class="toc-number">4.1.</span> <span class="toc-text">3.4.1 基本类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E5%B5%8C%E5%A5%97%E7%B1%BB%E4%B8%8E%E5%86%85%E9%83%A8%E7%B1%BB"><span class="toc-number">4.2.</span> <span class="toc-text">3.4.2 嵌套类与内部类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-linkedlist%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">3.5 LinkedList实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-%E5%9F%BA%E6%9C%AC%E7%B1%BB"><span class="toc-number">5.1.</span> <span class="toc-text">3.5.1 基本类</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>《数据结构与算法分析Java语言描述》第二章3.1到3.5节<strong>读书笔记</strong></p>
+<span id="more"></span>
+<h2 id="3-1-抽象数据类型">3.1 抽象数据类型</h2>
+<blockquote>
+<p>抽象数据类型(ADT)：是带有一组操作的一些对象的集合</p>
+</blockquote>
+<p>  对于集合ADT，可以有像添加(add)、删除(remove)、与包含(contain)这样的一些操作。也可以只要两种操作，并(union)和查找(find)。<br>
+ADT的实现一般取决与程序设计者，当ADT被程序设计者正确的实现后，使用该语言可以不必要知道他们如何实现。</p>
+<table><br></table>
+<h2 id="3-2表adt">3.2表ADT</h2>
+<blockquote>
+<p>形如<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>A</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>A</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>A</mi><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A_0,A_1,A_2,\ldots, A_{N-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>，这个表的大小为N，如果该表的大小为0，则该表称为<strong>空表</strong>，除空表外的任何表，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">A_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>后继<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A_{i-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>(或继<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A_{i-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>之后，i&lt;N)，并称<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">A_{i-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>前驱<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>i</mi></msub><mo stretchy="false">(</mo><mi>i</mi><mo>&gt;</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">A_i(i&gt;0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span>。</p>
+</blockquote>
+<p>  常用操作(不同的语言有不同的实现)：</p>
+<ol>
+<li><strong>printList</strong>：java没有直接实现，如果是List，可以直接打印，因为其父类AbstractCollection重写了toString方法。<br>
+如果是数组，可以通过Arrays.toString(数组)，方法实现打印。</li>
+<li><strong>makeEmpty</strong>：如果是List，有clear()方法，将所有元素置为null。</li>
+<li><strong>find</strong>：找到某元素第一次出现的位置，jdk好像没实现</li>
+<li><strong>insert</strong>：jdk实现的是add方法，有重载，不指定index，则默认最后，可以指定index。</li>
+<li><strong>findKth</strong>：查找某个index下的元素，如果是List，有get(index)方法，数组则int[index]。</li>
+<li><strong>remove</strong>：移除某个index的元素</li>
+</ol>
+<h3 id="3-2-1表的简单数组实现">3.2.1表的简单数组实现</h3>
+<p>  数组的实现，使printList可以用线性的时间O(N)执行，findKth则花费常数时间。插入和删除开销昂贵，在最坏的情况下，在索引为0的位置插入，需要将所有元素向后移动一位。而删除一个位置则需要将所有元素向前移动一位。两种操作的时间都为O(N)。但是如果所有元素都操作在表的高端(末端，数组有容量的情况下，否则需要昂贵的扩容)。添加和删除只需要O(1)的时间。</p>
+<h3 id="3-2-2简单链表">3.2.2简单链表</h3>
+<p>  链表由一系列节点组成，这些节点在内存中可以不相连，每个节点均含有表元素和包含该元素后继节点的链 link(指针)，称之为next链。最后一个节点的next链为null。<br>
+  执行printList与find(x)，可以从表的头的第一个节点开始使用后继的next遍历该表即可，这种操作和数组一样，是线性的时间。<br>
+  remove方法通过修改一个next指针实现，insert方法使用new操作符从系统中新增一个节点，此后执行两次引用调整。如图所示，链表的插入与删除都只需要花费常数的时间。<br>
+<img src="/2021/07/11/%E8%A1%A8%E4%B8%8Ejava%E4%B8%AD%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8F%92%E5%85%A5%E4%B8%8E%E5%88%A0%E9%99%A4.png" alt></p>
+<p>  双向链表：让每一个节点持有一个指向它在表中的前驱节点的链</p>
+<table><br></table>
+<h2 id="3-3-java-collections-api中的表">3.3 Java Collections API中的表</h2>
+<blockquote>
+<p>表ADT是在Collections API中的实现数据结构之一。</p>
+</blockquote>
+<h3 id="3-3-1-collections接口">3.3.1 Collections接口</h3>
+<p>  Collection接口扩展Iterable接口(可迭代)，实现该接口的类可以拥有简单的for循环，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此静态方法void前面的&lt;AnyType&gt;是引用类上的&lt;AnyType&gt;泛型</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;AnyType&gt; <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(Collection&lt;AnyType&gt; coll)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (AnyType item : coll) &#123;</span><br><span class="line">        System.out.println(item);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-2-iterator接口">3.3.2 Iterator接口</h3>
+<p>  实现Iterator接口的集合必须实现iterator接口方法，返回一个iterator，该iterator将当前位置的概念在对象内部存储。该iterator是java.util包中定义。<br>
+  每次对next调用，都给出该集合的下一项，hasNext()用来返回是否存在下一项。对于实现Iterable接口的增强for循环，编译器会重写，将其转换为由迭代器iterator进行迭代。所以前面的print被编译器改写为。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;AnyType&gt; <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(Collection&lt;AnyType&gt; coll)</span> &#123;</span><br><span class="line">    Iterator&lt;AnyType&gt; iterator = coll.iterator();</span><br><span class="line">    <span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">        <span class="type">AnyType</span> <span class="variable">item</span> <span class="operator">=</span> iterator.next();</span><br><span class="line">        System.out.println(item);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  iterator接口还有一个remove方法，该方法删除next返回的项，虽然Collection接口也有remove方法，但是Iterator方法有更多优点。Collecction的remove方法，必须要指定删除那一项，而Iterator可以在遍历的过程中删除。如果直接使用for循环remove集合中的某个元素，则会抛出异常，这时就应该使用迭代器的remove方法。</p>
+<h3 id="3-3-3-list接口与继承的类">3.3.3 List接口与继承的类</h3>
+<p>  List接口继承了Collection接口，如下包括其自己定义的一些重要的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MyList</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Collection</span>&lt;T&gt; &#123;</span><br><span class="line">    T <span class="title function_">get</span><span class="params">(<span class="type">int</span> index)</span>;</span><br><span class="line">    T <span class="title function_">set</span><span class="params">(<span class="type">int</span> index, T newVal)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> index, T x)</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">(<span class="type">int</span> index)</span>;</span><br><span class="line">    <span class="comment">// 此方法将产生更加复杂的迭代器</span></span><br><span class="line">    ListIterator&lt;T&gt; <span class="title function_">listIterator</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  List ADT有两种流行的实现方式，ArrayList是可变数组的具体实现，具有数组的特点，get与set花费常数的时间，add与remove的花费线性O(N)的时间(不在末端的情况)。LinkedList则实现了一种双向链表。具有一系列操作首尾位置的方法，其具有链表的特点，get的时间近似线性。<br>
+<strong>构造一个新的List</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">makeList1</span><span class="params">(List&lt;Integer&gt; lst, <span class="type">int</span> N)</span> &#123;</span><br><span class="line">    lst.clearn();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        lst.add(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  该构造，无论传入的是ArrayList还是LinkedList都是O(N)，每次都是在末尾添加。不考虑ArrayList的扩容。</p>
+<p><strong>在表的前端插入元素</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">makeList</span><span class="params">(List&lt;Integer&gt; lst, <span class="type">int</span> N)</span> &#123;</span><br><span class="line">    lst.clearn();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        lst.add(<span class="number">0</span>, i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  该构造，对于ArrayList是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，因为其每次插入花费时间O(N)，对于LinkedList则花费时间O(N)</p>
+<p><strong>求表中所有元素的和</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">sum</span><span class="params">(List&lt;Integer&gt; lst &#123;</span></span><br><span class="line"><span class="params">    <span class="type">int</span> total = <span class="number">0</span>;</span></span><br><span class="line"><span class="params">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++)</span> &#123;</span><br><span class="line">        total += lst.get(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> total;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  对于ArrayList其时间为O(N)，LinkedList时间为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，因为其每次获取元素需要O(N)的时间。如果使用增强for循环，则两个都是O(N)，将使用迭代器一直迭代下去。对搜索而言，两者都是低效的，contains与remove方法均花费线性时间。</p>
+<h3 id="3-3-4-likedlist中的remove方法">3.3.4 LikedList中的remove方法</h3>
+<blockquote>
+<p>考虑如下一个例子，删除表中的所有偶数。表[6,5,1,4,2]，删除后表中仅有5，1两个元素。</p>
+</blockquote>
+<p>  对于ArrayList，其删除的操作是O(N)，不是，一个好策略，对于LinkedList，如果不使用迭代器则是O(N)(首先需要找到该元素才能删除)，如果使用迭代器，则一次删除为O(1)。   如果使用普通的while循环，那么对于ArrayList是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>的时间，对于LinkedList也是O(N^2)的时间。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法不高效,并且在循环中使用collection的remove方法是一个非法的操作</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">removeEvensVer1</span><span class="params">(List&lt;Integer&gt; lst)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; lst.size()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (lst.get(i) % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            lst.remove(i);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 如果没有remove，则i++,(remove非法)</span></span><br><span class="line">            i ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  如下，该方法使用了增强for循环(即使用了迭代器)，但是使用了collection的remove方法，该方法必须再次搜索该项，因此remove执行时间仍然为O(N)，总体时间为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，并且同上，对增强for循环使用的基础迭代器中，collection的remove元素也是非法的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法不高效,并且在循环中使用collection的remove方法是一个非法的操作</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">removeEvensVer1</span><span class="params">(List&lt;Integer&gt; lst)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (Integer x : lst) &#123;</span><br><span class="line">        <span class="keyword">if</span> (x % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// collection的remove需要找到该元素，为O(N),且非法</span></span><br><span class="line">            lst.remove(x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  如下使用迭代器，对于LinkedList是O(N)的复杂度，对于ArrayList则依旧是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>的复杂度(remove后，数组必须整体向前移动)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title function_">removeEvensVer3</span><span class="params">(List&lt;Integer&gt; lst)</span> &#123;</span><br><span class="line">    Iterator&lt;Integer&gt; itr = lst.iterator();</span><br><span class="line">        <span class="keyword">while</span> (itr.hasNext()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (itr.next() % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            itr.remove();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-5-listiterator接口">3.3.5 ListIterator接口</h3>
+<p>  该接口只能被List使用，其扩展了Iterator</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ListIterator</span>&lt;AnyType&gt; <span class="keyword">extends</span> <span class="title class_">Iteerator</span>&lt;AnyType&gt; &#123;</span><br><span class="line">    <span class="comment">// 前向遍历， 是否有前一项</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">hasPrevious</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 获取前一项</span></span><br><span class="line">    AnyType <span class="title function_">previous</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 正向遍历，是否有后一项</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 获取后一项</span></span><br><span class="line">    AnyType <span class="title function_">next</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 在当前位置插入，即next项后移一位</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(AnyType x)</span>;</span><br><span class="line">    <span class="comment">// 设置当前项的值</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">set</span><span class="params">(AnyType newVal)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<table><br></table>
+<h2 id="3-4-arraylist类的实现">3.4 ArrayList类的实现</h2>
+<p>  此处手动实现一个MyArrayList，该类独立实现。将具有以下特点：</p>
+<ol>
+<li>将保持基础数组，数组的容量，存储当前项数</li>
+<li>将提供方法改变数组的容量，(将改变容量后的数组拷贝到新数组)</li>
+<li>提供get与set实现</li>
+<li>提供基本的例程，size()与isEmpty()实现，clear()实现，提供remove()，add()</li>
+<li>实现Iterator接口，提供next，hasNext，remove。</li>
+</ol>
+<h3 id="3-4-1-基本类">3.4.1 基本类</h3>
+<p>  该类不检测非法的迭代器remove方法。会在之后的3.5节实现。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>基本类主代码实现(点击展开)</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyArrayList</span>&lt;AnyType&gt; <span class="keyword">implements</span> <span class="title class_">Iterable</span>&lt;AnyType&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 默认容量为10</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_CAPACITY</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 定义size</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> theSize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 定义数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> AnyType[] theItems;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 空参构造方法，清空数组</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyArrayList</span><span class="params">()</span> &#123;</span><br><span class="line">        doClear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">        doClear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 清空方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doClear</span><span class="params">()</span> &#123;</span><br><span class="line">        theSize = <span class="number">0</span>;</span><br><span class="line">        ensureCapacity(DEFAULT_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取数组元素的个数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> theSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断数组的元素是否为空</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> size() == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将数组的容量截取到元素个数的量</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">trimToSize</span><span class="params">()</span> &#123;</span><br><span class="line">        ensureCapacity(size());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取指定索引的元素</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> AnyType <span class="title function_">get</span><span class="params">(<span class="type">int</span> idx)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (idx &lt; <span class="number">0</span> || idx &gt;= size()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ArrayIndexOutOfBoundsException</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> theItems[idx];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置指定位置的值,并返回旧的值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> AnyType <span class="title function_">set</span><span class="params">(<span class="type">int</span> idx, AnyType newVal)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (idx &lt; <span class="number">0</span> || idx &gt;= size()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ArrayIndexOutOfBoundsException</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">AnyType</span> <span class="variable">old</span> <span class="operator">=</span> theItems[idx];</span><br><span class="line">        theItems[idx] = newVal;</span><br><span class="line">        <span class="keyword">return</span> old;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 修改数组的容量</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">ensureCapacity</span><span class="params">(<span class="type">int</span> newCapacity)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (newCapacity &lt; theSize) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        AnyType[] old = theItems;</span><br><span class="line">        <span class="comment">// 创建指定大小的空数组，用于存放截取后的数组</span></span><br><span class="line">        theItems = (AnyType[]) <span class="keyword">new</span> <span class="title class_">Object</span>[newCapacity];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; size(); i++) &#123;</span><br><span class="line">            theItems[i] = old[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向数组中添加指定的元素, 默认为已有的元素的个数最后</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(AnyType x)</span> &#123;</span><br><span class="line">        add(size(), x);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 向数组的指定的位置添加元素</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> idx, AnyType x)</span> &#123;</span><br><span class="line">        <span class="comment">// 如果数组的长度等于元素个数量，则数组需要扩容</span></span><br><span class="line">        <span class="keyword">if</span> (theItems.length == size()) &#123;</span><br><span class="line">            ensureCapacity(size() * <span class="number">2</span> + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将指定位置与指定位置之后的所有元素后移一位</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> theSize; i &gt; idx; i--) &#123;</span><br><span class="line">            <span class="comment">// 最后，idx + 1 = idx，即将idx位置的元素向后移动一位</span></span><br><span class="line">            theItems[i] = theItems[i-<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 设置指定位置的值</span></span><br><span class="line">        theItems[idx] = x;</span><br><span class="line">        theSize++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> AnyType <span class="title function_">remove</span><span class="params">(<span class="type">int</span> idx)</span> &#123;</span><br><span class="line">        <span class="type">AnyType</span> <span class="variable">removeItem</span> <span class="operator">=</span> theItems[idx];</span><br><span class="line">        <span class="comment">// 将idx处的所有元素前移一位</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> idx; i &lt; size() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            theItems[i] = theItems[i + <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        theSize--;</span><br><span class="line">        <span class="keyword">return</span> removeItem;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取迭代器</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Iterator&lt;AnyType&gt; <span class="title function_">iterator</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayListIterator</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 内部类，用于创建迭代器</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">ArrayListIterator</span> <span class="keyword">implements</span> <span class="title class_">Iterator</span>&lt;AnyType&gt; &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> <span class="variable">current</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> current &lt; size();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> AnyType <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!hasNext()) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> theItems[current++];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">()</span> &#123;</span><br><span class="line">            MyArrayList.<span class="built_in">this</span>.remove(current-<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+<h3 id="3-4-2-嵌套类与内部类">3.4.2 嵌套类与内部类</h3>
+<p><strong>迭代器-内部类</strong>：可以使用，推荐这种(就是上面的实现)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyArrayList2</span>&lt;AnyType&gt; <span class="keyword">implements</span> <span class="title class_">Iterable</span>&lt;AnyType&gt; &#123;</span><br><span class="line">    <span class="comment">// 定义数组大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> theSize;</span><br><span class="line">    <span class="comment">// 定义数组</span></span><br><span class="line">    <span class="keyword">private</span> AnyType[] theItems;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Iterator&lt;AnyType&gt; <span class="title function_">iterator</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// this指代这个类</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayListIterator</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 重新定义的private内部类，不能使用泛型，可以直接使用外部类参数(不冲突的情况)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">ArrayListIterator</span> <span class="keyword">implements</span> <span class="title class_">Iterator</span>&#123;</span><br><span class="line">        <span class="comment">// 当前索引下标位置</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> <span class="variable">current</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> current &lt; size();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> AnyType <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="comment">// 此处实际上无法使用theItems数组参数，因为此内部类是一个顶级内部类，而theItems是外部类的一个私有参数</span></span><br><span class="line">            <span class="comment">// 现在为做出修改后的，可以使用，不是顶级内部类，在外部参数与内部类冲突的情况下可以直接使用外部类参数theItems</span></span><br><span class="line">            <span class="keyword">return</span> theItems[current++];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="comment">// 使用外部类的remove方法，与此内部类的remove(就是此方法)方法冲突，需要指明</span></span><br><span class="line">            MyArrayList2.<span class="built_in">this</span>.remove(--current);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>迭代器-嵌套类</strong>：就是把内部类申明为静态的，同时指定泛型，构造函数传入外部参数，可以使用，但不推荐，使用上面的。故不再列出。</p>
+<table><br></table>
+<h2 id="3-5-linkedlist实现">3.5 LinkedList实现</h2>
+<p>  同上，此处将手动实现一个LinkedList</p>
+<ol>
+<li>MyLinkedList类本身，包含到两端的链、表的大小和一些方法</li>
+<li>Node类，私有嵌套(静态内部)类，一个Node节点包含一个数据以及到前一个节点链和到下一个节点的链，还有构造方法</li>
+<li>LinkedListIterator类，抽象了位置的概念，私有类，实现Iterator，提供next方法、hasNext和remove实现</li>
+</ol>
+<h3 id="3-5-1-基本类">3.5.1 基本类</h3>
+<p>  该链表主要由Node节点组成，迭代器去遍历实现，迭代器存储当前节点的引用。该实现真实的链表前端额外创建一个节点，称为头节点，末端也额外创建一个节点，称为<strong>尾节点</strong>。使用这些节点的好处在于简化编码，删除头节点与尾节点都不再是特殊情况(删除算法也需要访问被删除的前一个节点)。<br>
+<img src="/2021/07/11/%E8%A1%A8%E4%B8%8Ejava%E4%B8%AD%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/%E9%A2%9D%E5%A4%96%E5%A4%B4%E5%B0%BE%E8%8A%82%E7%82%B9.png" alt></p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>基本类主代码(点击展开)</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyLinkedList</span>&lt;AnyType&gt; <span class="keyword">implements</span> <span class="title class_">Iterable</span>&lt;AnyType&gt; &#123;</span><br><span class="line">    <span class="comment">// 使用了嵌套类Node，类时私有的，其属性是否私有无关紧要(只有MyLinkedList类能见到该类，其他外部类无法访问)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;AnyType&gt; &#123;</span><br><span class="line">        <span class="keyword">public</span> AnyType data;            <span class="comment">// 节点内的数据</span></span><br><span class="line">        <span class="keyword">public</span> Node&lt;AnyType&gt; prev;      <span class="comment">// 节点的上一个节点</span></span><br><span class="line">        <span class="keyword">public</span> Node&lt;AnyType&gt; next;      <span class="comment">// 节点的下一个节点</span></span><br><span class="line">        <span class="comment">// 构造方法，创建一个新的节点；节点的数据，节点的上一个节点p,节点的下一个节点n</span></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(AnyType d, Node&lt;AnyType&gt; p, Node&lt;AnyType&gt; n)</span> &#123;</span><br><span class="line">            data = d;</span><br><span class="line">            prev = p;</span><br><span class="line">            next = n;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 链表长度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> theSize;</span><br><span class="line">    <span class="comment">// 自从构造以来，对链表所做改变次数，当调用迭代器LinkedListIterator的方法时，</span></span><br><span class="line">    <span class="comment">// 和迭代器存储的modCount方法比较，如果不一致，则报并发异常ConcurrentModificationException</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">modCount</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 链表头节点</span></span><br><span class="line">    <span class="keyword">private</span> Node&lt;AnyType&gt; beginMaker;</span><br><span class="line">    <span class="comment">// 链表尾节点</span></span><br><span class="line">    <span class="keyword">private</span> Node&lt;AnyType&gt; endMarker;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造方法，创建时清除现有链表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyLinkedList</span><span class="params">()</span> &#123;</span><br><span class="line">        doClear();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 供外部调用的clear方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">clear</span><span class="params">()</span> &#123;</span><br><span class="line">        doClear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 真正的doClear方法，</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">doClear</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 创建一个头节点，由于此时还没有尾节点故n节点为null</span></span><br><span class="line">        beginMaker = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;&gt;(<span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>);</span><br><span class="line">        <span class="comment">// 创建尾节点，上一个节点指向头节点</span></span><br><span class="line">        endMarker = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;&gt;(<span class="literal">null</span>, beginMaker, <span class="literal">null</span>);</span><br><span class="line">        <span class="comment">// 现在可以指定下一个节点为尾节点</span></span><br><span class="line">        beginMaker.next = endMarker;</span><br><span class="line">        <span class="comment">// 初始化长度为0</span></span><br><span class="line">        theSize = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 对节点的修改次数加1</span></span><br><span class="line">        modCount++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> theSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> size() == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向链表中添加元素，不指定位置，默认为尾节点前(即最后)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">add</span><span class="params">(AnyType x)</span> &#123;</span><br><span class="line">        <span class="comment">// 插入节点为原size()，因为索引下标为0开始，所以实际最大为size()-1</span></span><br><span class="line">        add(size(), x);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向链表中添加元素，指定插入下标</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> idx, AnyType x)</span> &#123;</span><br><span class="line">        <span class="comment">// 插入下标为x,则是插入原下标为x的前面</span></span><br><span class="line">        addBefore(getNode(idx, <span class="number">0</span>, size()), x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取指定索引处的值data</span></span><br><span class="line">    <span class="keyword">public</span> AnyType <span class="title function_">get</span><span class="params">(<span class="type">int</span> idx)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> getNode(idx).data;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 设置指定索引处的值</span></span><br><span class="line">    <span class="keyword">public</span> AnyType <span class="title function_">set</span><span class="params">(<span class="type">int</span> idx, AnyType newVal)</span> &#123;</span><br><span class="line">        Node&lt;AnyType&gt; p = getNode(idx);</span><br><span class="line">        <span class="type">AnyType</span> <span class="variable">oldVal</span> <span class="operator">=</span> p.data;</span><br><span class="line">        p.data = newVal;</span><br><span class="line">        <span class="keyword">return</span> oldVal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 对外公开的remove方法，只需要从指定删除处的索引</span></span><br><span class="line">    <span class="keyword">public</span> AnyType <span class="title function_">remove</span><span class="params">(<span class="type">int</span> idx)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> remove(getNode(idx));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在指定元素前添加节点</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">addBefore</span><span class="params">(Node&lt;AnyType&gt; p, AnyType x)</span> &#123;</span><br><span class="line">        Node&lt;AnyType&gt; newNode = <span class="keyword">new</span> <span class="title class_">Node</span>&lt;&gt;(x, p.prev, p);</span><br><span class="line">        newNode.prev.next = newNode;</span><br><span class="line">        p.prev = newNode;</span><br><span class="line">        theSize++;</span><br><span class="line">        modCount++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//  真正的删除方法，将p从链表断开</span></span><br><span class="line">    <span class="keyword">private</span> AnyType <span class="title function_">remove</span><span class="params">(Node&lt;AnyType&gt; p)</span> &#123;</span><br><span class="line">        p.next.prev = p.prev;</span><br><span class="line">        p.prev.next = p.next;</span><br><span class="line">        theSize--;</span><br><span class="line">        <span class="keyword">return</span> p.data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Node&lt;AnyType&gt; <span class="title function_">getNode</span><span class="params">(<span class="type">int</span> idx)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> getNode(idx, <span class="number">0</span>, size() -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取指定索引处的节点</span></span><br><span class="line">    <span class="keyword">private</span> Node&lt;AnyType&gt; <span class="title function_">getNode</span><span class="params">(<span class="type">int</span> idx, <span class="type">int</span> lower, <span class="type">int</span> upper)</span> &#123;</span><br><span class="line">        Node&lt;AnyType&gt; p;</span><br><span class="line">        <span class="keyword">if</span> (idx &lt; lower || idx &gt; upper) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IndexOutOfBoundsException</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果节点在前半部分，从前面遍历</span></span><br><span class="line">        <span class="keyword">if</span> (idx &lt; size() / <span class="number">2</span>) &#123;</span><br><span class="line">            p = beginMaker.next;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; idx; i++) &#123;</span><br><span class="line">                p = p.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 如果节点在后半部分，从前面遍历</span></span><br><span class="line">            p = endMarker;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> size(); i &gt; idx; i--) &#123;</span><br><span class="line">                p = p.prev;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Iterator&lt;AnyType&gt; <span class="title function_">iterator</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LinkedListIterator</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title class_">LinkedListIterator</span> <span class="keyword">implements</span> <span class="title class_">Iterator</span>&lt;AnyType&gt; &#123;</span><br><span class="line">        <span class="comment">// 将current节点初始化为头节点的下一个节点</span></span><br><span class="line">        <span class="keyword">private</span> MyLinkedList.Node&lt;AnyType&gt; current = beginMaker.next;</span><br><span class="line">        <span class="comment">// 使期望的修改次数=外部类的修改次数</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> <span class="variable">expectedModCount</span> <span class="operator">=</span> modCount;</span><br><span class="line">        <span class="comment">// 是否可以remove</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">okToRemove</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> current != endMarker;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> AnyType <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (modCount != expectedModCount) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ConcurrentModificationException</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!hasNext()) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoSuchElementException</span>();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="type">AnyType</span> <span class="variable">nextItem</span> <span class="operator">=</span> current.data;</span><br><span class="line">            current = current.next;</span><br><span class="line">            okToRemove = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span> nextItem;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (modCount != expectedModCount) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ConcurrentModificationException</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!okToRemove) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 真正的remove,不改变currentt(ArrayList需要更改)</span></span><br><span class="line">            MyLinkedList.<span class="built_in">this</span>.remove(current.prev);</span><br><span class="line">            expectedModCount++;</span><br><span class="line">            okToRemove = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://songbirds.top/2021/07/11/%E8%A1%A8%E4%B8%8Ejava%E4%B8%AD%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://songbirds.top/2021/07/11/%E8%A1%A8%E4%B8%8Ejava%E4%B8%AD%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/";
+            const title         = "「表与java中表的实现」";
+            const excerpt       = `《数据结构与算法分析Java语言描述》第二章3.1到3.5节读书笔记`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2022-02-27T08:40:55.045Z" itemprop="dateModified">最后编辑：2022-02-27</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 原码-反码-补码" href="/2021/06/06/原码-反码-补码/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 栈与队列" href="/2021/09/21/栈与队列/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments lazy-load bg-image"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'vEBGC4VHVhyutyONIB45BVcx-gzGzoHsz',
+                appKey: 'HiWD9QjgIOJLLqiiSMmvw0uU',
+                visitor: false,
+                enableQQ: false,
+                path: '/2021/07/11/%E8%A1%A8%E4%B8%8Ejava%E4%B8%AD%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0/',
+				placeholder: '',
+				requiredFields: ['']
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = '/vendors/valine@1.4.18/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.svg" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">就想着,写点东西而已</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                41
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">3.1 抽象数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%E8%A1%A8adt"><span class="toc-text">3.2表ADT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1%E8%A1%A8%E7%9A%84%E7%AE%80%E5%8D%95%E6%95%B0%E7%BB%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">3.2.1表的简单数组实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2%E7%AE%80%E5%8D%95%E9%93%BE%E8%A1%A8"><span class="toc-text">3.2.2简单链表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-java-collections-api%E4%B8%AD%E7%9A%84%E8%A1%A8"><span class="toc-text">3.3 Java Collections API中的表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-collections%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.3.1 Collections接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-iterator%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.3.2 Iterator接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-3-list%E6%8E%A5%E5%8F%A3%E4%B8%8E%E7%BB%A7%E6%89%BF%E7%9A%84%E7%B1%BB"><span class="toc-text">3.3.3 List接口与继承的类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-4-likedlist%E4%B8%AD%E7%9A%84remove%E6%96%B9%E6%B3%95"><span class="toc-text">3.3.4 LikedList中的remove方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-5-listiterator%E6%8E%A5%E5%8F%A3"><span class="toc-text">3.3.5 ListIterator接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-arraylist%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">3.4 ArrayList类的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-%E5%9F%BA%E6%9C%AC%E7%B1%BB"><span class="toc-text">3.4.1 基本类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-%E5%B5%8C%E5%A5%97%E7%B1%BB%E4%B8%8E%E5%86%85%E9%83%A8%E7%B1%BB"><span class="toc-text">3.4.2 嵌套类与内部类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-linkedlist%E5%AE%9E%E7%8E%B0"><span class="toc-text">3.5 LinkedList实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-1-%E5%9F%BA%E6%9C%AC%E7%B1%BB"><span class="toc-text">3.5.1 基本类</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/">cs基础</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Vue/">Vue</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/sql/">sql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/">站点相关</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">2</span></li></ul></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/ElementUI/" style="font-size: 0.65em;">ElementUI</a> <a href="/tags/Jvm/" style="font-size: 0.7em;">Jvm</a> <a href="/tags/Mysql/" style="font-size: 0.7em;">Mysql</a> <a href="/tags/Vue/" style="font-size: 0.65em;">Vue</a> <a href="/tags/ajax/" style="font-size: 0.65em;">ajax</a> <a href="/tags/debian/" style="font-size: 0.6em;">debian</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 0.6em;">java基础</a> <a href="/tags/spring/" style="font-size: 0.65em;">spring</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 0.6em;">中间件</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 0.8em;">数据结构与算法</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 0.75em;">算法</a>
+      </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2023 Songbirds 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by songbirds.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="746911472"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

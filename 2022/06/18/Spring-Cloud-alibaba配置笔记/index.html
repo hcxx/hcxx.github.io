@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/avatar.svg">
+  
+  <title>Spring-Cloud-alibaba配置笔记 | Songbirds</title>
+  <meta name="author" content="songbirds" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="spring" />
+  
+  <meta name="description" content="spring-cloud-alibaba配置笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring-Cloud-alibaba配置笔记">
+<meta property="og:url" content="http://songbirds.top/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Songbirds">
+<meta property="og:description" content="spring-cloud-alibaba配置笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://songbirds.top/images/avatar.svg">
+<meta property="article:published_time" content="2022-06-18T14:36:50.000Z">
+<meta property="article:modified_time" content="2023-03-26T15:07:49.936Z">
+<meta property="article:author" content="songbirds">
+<meta property="article:tag" content="spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://songbirds.top/images/avatar.svg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner.webp');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.2.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                        
+                                            <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/tags/"><i class="fa fa-tags"></i>标签</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/friends/"><i class="fa fa-paw"></i>友链</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/todo/"><i class="fa fa-hourglass-start"></i>TODO</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/bangumis/"><i class="fa fa-television"></i>追番</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                                        
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Songbirds</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Songbirds</h2> <br />
+                        <span>春</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://songbirds.top/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Spring-Cloud-alibaba配置笔记</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2022-06-18T14:36:50.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2022-06-18</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">songbirds</span>
+                </li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~18.35K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1679843269936"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E4%BE%9D%E8%B5%96"><span class="toc-number">1.</span> <span class="toc-text">管理依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nacos%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="toc-number">2.</span> <span class="toc-text">Nacos注册中心</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5-%E5%8F%AAcommon"><span class="toc-number">2.1.</span> <span class="toc-text">1. 依赖引入(只common)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%AF%E7%94%A8%E6%9C%8D%E5%8A%A1%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">2. 启用服务服务发现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6nacos%E7%9B%B8%E5%85%B3-yml"><span class="toc-number">2.3.</span> <span class="toc-text">3. 配置文件nacos相关(yml)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%AF%E5%8A%A8nacos"><span class="toc-number">2.4.</span> <span class="toc-text">4. 启动nacos</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#feign"><span class="toc-number">3.</span> <span class="toc-text">Feign</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5-%E6%89%80%E6%9C%89%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8feign%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1-%E9%99%A4common"><span class="toc-number">3.1.</span> <span class="toc-text">1. 依赖引入(所有需要使用Feign的微服务，除common)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%94%B3%E6%98%8Efeign%E5%88%9B%E5%BB%BA%E8%B0%83%E7%94%A8"><span class="toc-number">3.2.</span> <span class="toc-text">2. 申明feign创建调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%94%B3%E6%98%8E%E5%90%AF%E7%94%A8feign%E8%B0%83%E7%94%A8"><span class="toc-number">3.3.</span> <span class="toc-text">3. 申明启用feign调用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83"><span class="toc-number">4.</span> <span class="toc-text">Nacos配置中心</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5-%E5%8F%AAcommon"><span class="toc-number">4.1.</span> <span class="toc-text">1. 依赖引入（只common）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">4.2.</span> <span class="toc-text">2. 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nacos%E7%BD%91%E9%A1%B5%E9%85%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E6%B7%BB%E5%8A%A0"><span class="toc-number">4.3.</span> <span class="toc-text">Nacos网页配置列表添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E7%B1%BB%E5%8A%A0%E6%B3%A8%E8%A7%A3"><span class="toc-number">4.4.</span> <span class="toc-text">引入配置参数类加注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BB%A5%E5%BC%80%E5%8F%91%E6%B5%8B%E8%AF%95%E7%94%9F%E4%BA%A7%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4-%E4%B8%8D%E5%A4%AA%E6%8E%A8%E8%8D%90"><span class="toc-number">4.5.</span> <span class="toc-text">3. 以开发测试生产命名空间(不太推荐)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BB%A5%E6%AF%8F%E4%B8%AA%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BD%9C%E4%B8%BA%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-number">4.6.</span> <span class="toc-text">4. 以每个微服务作为命名空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AE%E5%88%86%E7%BB%84"><span class="toc-number">4.7.</span> <span class="toc-text">5. 配置分组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%80%9A%E8%BF%87%E5%88%86%E7%BB%84%E9%9A%94%E7%A6%BB%E7%8E%AF%E5%A2%83"><span class="toc-number">4.8.</span> <span class="toc-text">6. 通过分组隔离环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E4%BD%BF%E7%94%A8%E9%85%8D%E7%BD%AE%E9%9B%86"><span class="toc-number">4.9.</span> <span class="toc-text">7. 使用配置集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gateway%E7%BD%91%E5%85%B3"><span class="toc-number">5.</span> <span class="toc-text">Gateway网关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5"><span class="toc-number">5.1.</span> <span class="toc-text">1. 依赖引入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-number">5.2.</span> <span class="toc-text">2. 注解配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nacos%E6%B3%A8%E5%86%8C"><span class="toc-number">5.3.</span> <span class="toc-text">Nacos注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99"><span class="toc-number">5.4.</span> <span class="toc-text">路由规则</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>spring-cloud-alibaba配置笔记</p>
+<span id="more"></span>
+<h2 id="管理依赖">管理依赖</h2>
+<p>在common微服务单独添加如下依赖，该依赖会SpringCloud-alibaba的所有组件进行依赖管理。然后所有微服务必须引入common依赖，<br>
+注意：common创建是使用idea自带的maven脚手架创建，而不是springBoot，所以没有启动类</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>Common服务</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>project<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.example.project<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>project-common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>每一个微服务公共的依赖，bean，工具类等<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--mybatis-plus--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.baomidou<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.18.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.httpcomponents<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>httpcore<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-lang<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-lang<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--tomcat存在打包的時候不需要--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.0.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&lt;!-- 由于每一个微服务都需要配置中心，所以写这里，版本由下面的dependencyManagement管理 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!-- 使用openfeign的负载均衡，需要排除这个自带的负载均衡 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-ribbon<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 由于每一个服务都需要使用配置中心，所以写这里，版本由dependencyManagement管理 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- springBoot的2.4即以上版本需要添加，之后再使用 bootstrap.properties 配置文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- Bean 校验注解 ，高版本要用starter的依赖--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 依赖管理，上面的部分依赖版本由下面的管理，spring-cloud-alibaba的注册中心、配置中心，管理依赖版本，注意下面的pom示例是spring-cluod--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.7.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>某单独微服务的pom参考</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span> <span class="comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.example.project<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>microServe1<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>microServe1<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>微服务1<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 指定spring-cloud的依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">spring-cloud.version</span>&gt;</span>2021.0.3<span class="tag">&lt;/<span class="name">spring-cloud.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.example.project<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>project-common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">		</span><br><span class="line">        <span class="comment">&lt;!-- 阿里云OSS服务单独抽出到第三方微服务后，不再需要，并且使用的是spring-cloud-starter-alicloud-oss的依赖 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;dependency&gt;</span></span><br><span class="line"><span class="comment">            &lt;groupId&gt;com.aliyun.oss&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">            &lt;artifactId&gt;aliyun-sdk-oss&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">            &lt;version&gt;3.10.2&lt;/version&gt;</span></span><br><span class="line"><span class="comment">        &lt;/dependency&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- spring-cloud的依赖管理，上面没有配置版本的都由此管理版本 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 管理spring-cloud的依赖 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+<h2 id="nacos注册中心">Nacos注册中心</h2>
+<h3 id="1-依赖引入-只common">1. 依赖引入(只common)</h3>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 由于每一个微服务都需要配置中心，所以写common，版本由上面说的dependencyManagement管理 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 排除ribbon，因为feign不再使用ribbon，而是使用lodblance-starter, 因为feign是单独引用，所以建议lodblance-starter和feign单独引用 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-ribbon<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-启用服务服务发现">2. 启用服务服务发现</h3>
+<p>添加<code>@EnableDiscoveryClient</code>注解，添加完后应该如下，所有微服务需要注册</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">microServer1Application</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(microServer1Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-配置文件nacos相关-yml">3. 配置文件nacos相关(yml)</h3>
+<p>也可以后续用写入<code>bootstrap.yml</code>中，参考Naocs配置中心章节</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">microServer1</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-启动nacos">4. 启动nacos</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup.cmd -m standalone</span><br></pre></td></tr></table></figure>
+<h2 id="feign">Feign</h2>
+<p>申明式的远程调用http客户端（现在已经支持RPC调用了）</p>
+<h3 id="1-依赖引入-所有需要使用feign的微服务-除common">1. 依赖引入(所有需要使用Feign的微服务，除common)</h3>
+<p>注意：在使用idea的springBoot脚手架创建每个微服务时，我们已经选择fegin的初始化创建(同时也选择了web-starter)。所以不再需要引入依赖。</p>
+<p>但是，在新版OpenFign使用了RPC的远程调用，需要同时加入一个新的依赖，加完后这两个依赖如下。（版本已经交给<code>dependencyManagement</code>管理，所以不再需要配置版本）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 新版本cloud-open-feign不再使用ribbon做负载均衡，而是使用spring-cloud-starter-loadbalancer --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-loadbalancer<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-申明feign创建调用">2. 申明feign创建调用</h3>
+<p>在Application启动类同级目录下创建feign文件夹，后面的的远程调用写在此文件夹中，方便管理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 注解`<span class="doctag">@FeignClient</span>(&quot;microServer2&quot;)`申明为fegin客户端,要远程调用 microServer2 的服务</span></span><br><span class="line"><span class="comment"> * 调用过程，首先去注册中心nacos找到 microServer2 服务，然后再根具下面的具体路径地址调用其服务</span></span><br><span class="line"><span class="comment"> * microServer2 是被调用的微服务的注册在nacos的名称 (spring.application.name 的值)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 要调用的直接调用自己包下的 exampleFeignService </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@FeignClient(&quot;microServer2&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">exampleFeignService</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从远程接口复制过来的方法(被调用的方法)</span></span><br><span class="line"><span class="comment">     * 同时远程的接口的地址也写全</span></span><br><span class="line"><span class="comment">     * SpuBoundDto 不必与远程接口是同一个实体类，只要通过json能完全转过去</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;example/example/example/list&quot;)</span> <span class="comment">// 远程接口的地址，从controller上开始</span></span><br><span class="line">    R <span class="title function_">saveSpuBonds</span><span class="params">(<span class="meta">@RequestBody</span> SpuBoundDto spuBoundDto)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-申明启用feign调用">3. 申明启用feign调用</h3>
+<p>开启feign的注解, 指定feign要扫描的指定地址下的所有接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 1. 想要远程调用，需要开启服务发现</span></span><br><span class="line"><span class="comment"> *  1） 引入依赖：open-feign</span></span><br><span class="line"><span class="comment"> *  2) 编写一个接口，告诉springCloud这个接口需要调用远程服务</span></span><br><span class="line"><span class="comment"> *      （创建feign文件夹，创建接口，申明feign客户端，调用，详细见feign注释）</span></span><br><span class="line"><span class="comment"> *      1. 申明接口的每一个方法都是调用的哪一个远程服务</span></span><br><span class="line"><span class="comment"> *  3） 开启feign的注解, 并指定feign要扫描的指定地址下的所有接口</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@EnableFeignClients(basePackages = &quot;com.example.example.example.fegin&quot;)</span> <span class="comment">// 启用feign并说明feign在那个包</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServerMemberApplication</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(ServerMemberApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="nacos配置中心">Nacos配置中心</h2>
+<h3 id="1-依赖引入-只common">1. 依赖引入（只common）</h3>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- springBoot的2.4即以上版本需要添加，之后再使用 bootstrap.properties 配置文件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-配置文件">2. 配置文件</h3>
+<p>resources目录下辖创建<code>bootstrap.properties</code>文件，该文件会先于<code>application.properties</code>文件加载。必须要先于加载，加载后去配置中心读取配置文件。如下配置文件皆是修改bootstrap文件。如果只看结果，翻到最后一点即可。</p>
+<p>读取流程：</p>
+<ol>
+<li>先通过配置地址server-addr查找到nacos，</li>
+<li>再通过命名空间，查找到uuid为‘361a2167-5594-4440-ac8e-ea927be56c67’的命名空间（如无则为public）</li>
+<li>再查找组名。（如无则为DEFAULT_GROUP）</li>
+<li>再查找应用名<code>server1</code>。找到<code>server1.后缀</code>的作为配置文件。</li>
+</ol>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name</span>=<span class="string">server1 # 模块名称（每个微服务的第一个文件夹名，建议和artifactId保持一致）</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"><span class="comment"># 要先创建命名空间，才能有uuid，才能设置。</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.namespace</span>=<span class="string">361a2167-5594-4440-ac8e-ea927be56c67 # 指定要使用的命名空间的配置uuid</span></span><br><span class="line"><span class="comment"># 如果配置中心使用的配置文件是yaml，需要指定，否则默认为server1.properties（分组拆分的时候已经指明文件为xxx.yaml时可以不用）</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.file-extension</span>=<span class="string">yaml</span></span><br><span class="line"><span class="comment"># 要先创建组名，才有，可以先不管，后面有说明</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.group</span>=<span class="string">events # 指定组名为events</span></span><br></pre></td></tr></table></figure>
+<h3 id="nacos网页配置列表添加">Nacos网页配置列表添加</h3>
+<p>打开左侧<code>配置管理/配置列表</code>，点击加号，Data ID是应用名称，就是上面一点配置文件中的<code>spring.application.name=microServer</code>的microServer，一般取名为微分服务的最外层文件夹名。例如：·/father/example/src/main…·，其中father为聚合服务，example为微服务应用名。<img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220603232925834-16555631121241.png" alt="添加配置实现热更新"></p>
+<h3 id="引入配置参数类加注解">引入配置参数类加注解</h3>
+<p>引用了application.properties的文件，需要加上注解<code>@RefreshScope</code>，才能实时更新，动态获取配置值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RefreshScope</span> <span class="comment">// 用于实时从Nacos的配置中心获取参数</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;server1/test&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 引用配置中心的参数</span></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;user.name&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">	<span class="comment">// 引用配置中心的参数</span></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;user.age&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果配置中心和配置文件都使用了相同的配置项，优先使用配置中心的配置。</p>
+<h3 id="3-以开发测试生产命名空间-不太推荐">3. 以开发测试生产命名空间(不太推荐)</h3>
+<p>命名空间主要是用来区分，开发、测试、生产的环境的配置文件。默认有一个public，利用命名空间做环境隔离，需要在bootstrap.properties配置上，需要使用哪一个命名空间下的配置文件。</p>
+<p>如果微服务众多，可以每一个微服务都创建自己的命名空间。只加载自己命名空间下的所有配置。</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604105154618-16555631121252.png" alt="Nacos命名空间"></p>
+<p>创建完成后，配置列表会多如下的可选择项。</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604105405954-16555631121253.png" alt="Nacos配置列表选择项"></p>
+<p>然后根据需要，在配置文件中指定要使用的命名空间的uuid。</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604110442433-16555631121254.png" alt="选择命名空间"></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name</span>=<span class="string">microServer # 应用名称</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.namespace</span>=<span class="string">5fb79757-32f8-49d1-a94d-8a198f602d52 # 指定要使用的命名空间的配置uuid</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-以每个微服务作为命名空间">4. 以每个微服务作为命名空间</h3>
+<p>配置列表中，选择克隆，可以从其他命名空间复制配置文件。</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604111125500-16555631121256.png" alt="微服务作为命名空间"></p>
+<h3 id="5-配置分组">5. 配置分组</h3>
+<p>图中同一命名空间下有相同的Data_ID的。但是分组不同，可于配置文件中配置分组。</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604112235042-16555631121255.png" alt="配置分组"></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name</span>=<span class="string">server1</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.namespace</span>=<span class="string">5fb79757-32f8-49d1-a94d-8a198f602d52 # 指定命名空间</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.group</span>=<span class="string">events # 指定组名为events</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-通过分组隔离环境">6. 通过分组隔离环境</h3>
+<p>分dev组和prod组</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604113850760-16555631121257.png" alt="分组隔离环境"></p>
+<h3 id="7-使用配置集">7. 使用配置集</h3>
+<p>yaml中的配置可以进一步的拆分，如下将原本的配置application.yml配置文件拆分成datasource、mybatis、other模块。在配置集中没有的参数，会去指定的空间与组名中尝试去查找。</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604142556772-16555631121258.png" alt="配置集的使用"></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name</span>=<span class="string">server1</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"><span class="comment"># 指定命名空间，</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.namespace</span>=<span class="string">5fb79757-32f8-49d1-a94d-8a198f602d52</span></span><br><span class="line"><span class="comment"># 指定组名为dev，当在下列配置集中找不到的时候，会尝试来此组中查找</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.group</span>=<span class="string">dev</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 使用配置集，是个集合。此配置有三个组成，这里已经指定为配置名.yaml，所以不再需要配置文件类型为yaml</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[0].data-id</span>=<span class="string">datasource.yaml # Data_ID</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[0].group</span>=<span class="string">dev # 组名</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[0].refresh</span>=<span class="string">true # 动态更新</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[1].data-id</span>=<span class="string">mybatis.yaml</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[1].group</span>=<span class="string">dev</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[1].refresh</span>=<span class="string">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[2].data-id</span>=<span class="string">other.yaml</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[2].group</span>=<span class="string">dev</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.extension-configs[2].refresh</span>=<span class="string">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="gateway网关">Gateway网关</h2>
+<p>gateway用来做网关。使用idea的spring脚手架初始化项目，</p>
+<h3 id="1-依赖引入">1. 依赖引入</h3>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-cloud.version</span>&gt;</span>2021.0.3<span class="tag">&lt;/<span class="name">spring-cloud.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 引入common工程依赖，因为该微服务也需要使用Nacos --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 添加gateway依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-gateway<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 添加 loadbalancer依赖解决gateway路径重写503问题--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-loadbalancer<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 上面的版本由cloud控制，cloud版本由cloud.version控制--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>bootstrap.properties 添加配置</code></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name</span>=<span class="string">microServer2-gatewa</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848 # 配置中心Nacos地址</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.namespace</span>=<span class="string">d6d7433c-c339-4381-9138-661749338b2a</span></span><br></pre></td></tr></table></figure>
+<p><code>application.properties </code>添加配置</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.cloud.nacos.discovery.server-addr</span>=<span class="string">127.0.0.1:8848	# 注册中心Nacos地址</span></span><br><span class="line"><span class="attr">spring.application.name</span>=<span class="string">microServer2-gateway	# 注册服务名</span></span><br><span class="line"><span class="attr">server.port</span>=<span class="string">88 # gatewway的端口号</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-注解配置">2. 注解配置</h3>
+<p>在启动类上添加启用Nacos注解，同时排除myabtis自动配置的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="comment">// 排除数据库自动配置</span></span><br><span class="line"><span class="meta">@SpringBootApplication(exclude = &#123;DataSourceAutoConfiguration.class&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServerGatewayApplication</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(ServerGatewayApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="nacos注册">Nacos注册</h3>
+<p>在Nacos中给gateway创建命名空间。并创建Data_ID的yaml配置文件。同时创建<code>bootstrap.properties</code>文件。</p>
+<p><img src="/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/image-20220604153644447-16555631121259.png" alt="gateway的Nacos中的配置文件"></p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name</span>=<span class="string">microServer2</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.namespace</span>=<span class="string">d6d7433c-c339-4381-9138-661749338b2a</span></span><br></pre></td></tr></table></figure>
+<h3 id="路由规则">路由规则</h3>
+<p>gate可以创建路由规则，在满足断言的情况下，可以路由到指定的地址，创建<code>application.yml</code>文件，创建如下路由规则。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      	<span class="comment"># `-`表示数组，可以平级配置多个</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">test_route</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">https://www.baidu.com</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">          	<span class="comment"># 查询参数包含url=baidu，则路由到上面的地址</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Query=url,baidu</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">qq_route</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">https://www.qq.com</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Query=url,qq</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">product_route</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://micro-serverName</span> <span class="comment"># Nacos上注册的服务名（要路由到哪个微服务）</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/product/**</span>   <span class="comment"># 断言该路径下的所有请求(写在前面的先断言，所以详细的路径应该写前面)</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="comment"># api下的所有请求， 把api前缀去掉，剩下的留着，再调用（调用上面指定的微服务的接口路径）</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">RewritePath=/api/(?&lt;segment&gt;.*),/$\&#123;segment&#125;</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">admin_route</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://micro-serverName2</span> <span class="comment"># Nacos上注册的服务名（要路由到哪个微服务）</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/**</span> <span class="comment">#(宽泛的路径写后面)</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">RewritePath=/api/?(?&lt;segment&gt;.*),</span> <span class="string">/renren-fast/$\&#123;segment&#125;</span></span><br><span class="line"><span class="comment">## 前端项目， 发送请求都带api前缀， 如下请求路径会被路由到后面的实际地址</span></span><br><span class="line"><span class="comment">## product: http://localhost:88/api/product/category/list/tree  http://localhost:10000/product/category/list/tree</span></span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://songbirds.top/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://songbirds.top/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/";
+            const title         = "「Spring-Cloud-alibaba配置笔记」";
+            const excerpt       = `spring-cloud-alibaba配置笔记`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/spring/" rel="tag">spring</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2023-03-26T15:07:49.936Z" itemprop="dateModified">最后编辑：2023-03-26</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" (无标题)" href="/2022/06/02/黑泥1/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" (无标题)" href="/2022/07/04/20220704/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments lazy-load bg-image"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'vEBGC4VHVhyutyONIB45BVcx-gzGzoHsz',
+                appKey: 'HiWD9QjgIOJLLqiiSMmvw0uU',
+                visitor: false,
+                enableQQ: false,
+                path: '/2022/06/18/Spring-Cloud-alibaba%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/',
+				placeholder: '',
+				requiredFields: ['']
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = '/vendors/valine@1.4.18/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.svg" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">就想着,写点东西而已</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                41
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E4%BE%9D%E8%B5%96"><span class="toc-text">管理依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nacos%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="toc-text">Nacos注册中心</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5-%E5%8F%AAcommon"><span class="toc-text">1. 依赖引入(只common)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%AF%E7%94%A8%E6%9C%8D%E5%8A%A1%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0"><span class="toc-text">2. 启用服务服务发现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6nacos%E7%9B%B8%E5%85%B3-yml"><span class="toc-text">3. 配置文件nacos相关(yml)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%90%AF%E5%8A%A8nacos"><span class="toc-text">4. 启动nacos</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#feign"><span class="toc-text">Feign</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5-%E6%89%80%E6%9C%89%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8feign%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1-%E9%99%A4common"><span class="toc-text">1. 依赖引入(所有需要使用Feign的微服务，除common)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%94%B3%E6%98%8Efeign%E5%88%9B%E5%BB%BA%E8%B0%83%E7%94%A8"><span class="toc-text">2. 申明feign创建调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%94%B3%E6%98%8E%E5%90%AF%E7%94%A8feign%E8%B0%83%E7%94%A8"><span class="toc-text">3. 申明启用feign调用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83"><span class="toc-text">Nacos配置中心</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5-%E5%8F%AAcommon"><span class="toc-text">1. 依赖引入（只common）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">2. 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nacos%E7%BD%91%E9%A1%B5%E9%85%8D%E7%BD%AE%E5%88%97%E8%A1%A8%E6%B7%BB%E5%8A%A0"><span class="toc-text">Nacos网页配置列表添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E7%B1%BB%E5%8A%A0%E6%B3%A8%E8%A7%A3"><span class="toc-text">引入配置参数类加注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BB%A5%E5%BC%80%E5%8F%91%E6%B5%8B%E8%AF%95%E7%94%9F%E4%BA%A7%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4-%E4%B8%8D%E5%A4%AA%E6%8E%A8%E8%8D%90"><span class="toc-text">3. 以开发测试生产命名空间(不太推荐)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BB%A5%E6%AF%8F%E4%B8%AA%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BD%9C%E4%B8%BA%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="toc-text">4. 以每个微服务作为命名空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AE%E5%88%86%E7%BB%84"><span class="toc-text">5. 配置分组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%80%9A%E8%BF%87%E5%88%86%E7%BB%84%E9%9A%94%E7%A6%BB%E7%8E%AF%E5%A2%83"><span class="toc-text">6. 通过分组隔离环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E4%BD%BF%E7%94%A8%E9%85%8D%E7%BD%AE%E9%9B%86"><span class="toc-text">7. 使用配置集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gateway%E7%BD%91%E5%85%B3"><span class="toc-text">Gateway网关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BE%9D%E8%B5%96%E5%BC%95%E5%85%A5"><span class="toc-text">1. 依赖引入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-text">2. 注解配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nacos%E6%B3%A8%E5%86%8C"><span class="toc-text">Nacos注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99"><span class="toc-text">路由规则</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/">cs基础</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Vue/">Vue</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/sql/">sql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/">站点相关</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">2</span></li></ul></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/ElementUI/" style="font-size: 0.65em;">ElementUI</a> <a href="/tags/Jvm/" style="font-size: 0.7em;">Jvm</a> <a href="/tags/Mysql/" style="font-size: 0.7em;">Mysql</a> <a href="/tags/Vue/" style="font-size: 0.65em;">Vue</a> <a href="/tags/ajax/" style="font-size: 0.65em;">ajax</a> <a href="/tags/debian/" style="font-size: 0.6em;">debian</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 0.6em;">java基础</a> <a href="/tags/spring/" style="font-size: 0.65em;">spring</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 0.6em;">中间件</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 0.8em;">数据结构与算法</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 0.75em;">算法</a>
+      </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2023 Songbirds 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by songbirds.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="746911472"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

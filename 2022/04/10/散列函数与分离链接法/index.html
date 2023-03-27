@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/avatar.svg">
+  
+  <title>散列函数与分离链接法 | Songbirds</title>
+  <meta name="author" content="songbirds" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="数据结构与算法" />
+  
+  <meta name="description" content="《数据结构与算法分析Java语言描述》第五章5.2与5.3节读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="散列函数与分离链接法">
+<meta property="og:url" content="http://songbirds.top/2022/04/10/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95/index.html">
+<meta property="og:site_name" content="Songbirds">
+<meta property="og:description" content="《数据结构与算法分析Java语言描述》第五章5.2与5.3节读书笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://songbirds.top/images/avatar.svg">
+<meta property="article:published_time" content="2022-04-10T05:24:41.000Z">
+<meta property="article:modified_time" content="2022-04-17T05:34:49.464Z">
+<meta property="article:author" content="songbirds">
+<meta property="article:tag" content="数据结构与算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://songbirds.top/images/avatar.svg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner.webp');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.2.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                        
+                                            <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/tags/"><i class="fa fa-tags"></i>标签</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/friends/"><i class="fa fa-paw"></i>友链</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/todo/"><i class="fa fa-hourglass-start"></i>TODO</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/bangumis/"><i class="fa fa-television"></i>追番</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                                        
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Songbirds</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Songbirds</h2> <br />
+                        <span>春</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://songbirds.top/2022/04/10/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">散列函数与分离链接法</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2022-04-10T05:24:41.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2022-04-10</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">songbirds</span>
+                </li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~5.91K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1650173689464"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E6%95%A3%E5%88%97"><span class="toc-number">1.</span> <span class="toc-text">5.1 散列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">5.2 散列函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-1-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E4%B8%80"><span class="toc-number">2.1.</span> <span class="toc-text">5.2.1 散列函数实现方案一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-2-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E4%BA%8C"><span class="toc-number">2.2.</span> <span class="toc-text">5.2.2 散列函数实现方案二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-3-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E4%B8%89"><span class="toc-number">2.3.</span> <span class="toc-text">5.2.3 散列函数实现方案三</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E4%B9%8B%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">5.3 哈希冲突之分离链接法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-1-%E5%85%B7%E4%BD%93%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.</span> <span class="toc-text">5.3.1 具体操作</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>《数据结构与算法分析Java语言描述》第五章5.2与5.3节<strong>读书笔记</strong></p>
+<span id="more"></span>
+<h2 id="5-1-散列">5.1 散列</h2>
+<ol>
+<li>
+<p>理想的散列是只包含固定大小的数组，</p>
+</li>
+<li>
+<p>通常查找是对某个数据域进行的，这部分叫做关键字(key)</p>
+</li>
+<li>
+<p>每个关键字按照一定规则，均匀的映射到整个数组中。这个映射叫做散列函数</p>
+</li>
+</ol>
+<div class="alert alert-info"><div class="icon"><i class="fa fa-info"></i></div><div class="text"><p>优秀的散列函数，能够将映射冲突的可能性降低到最小</p>
+</div></div>
+<h2 id="5-2-散列函数">5.2 散列函数</h2>
+<p>  如果输入的关键字都是整数，则一般的简单映射函数就是使用<code>key % tableSize</code>，直接取模。同时保证表的大小为素数，是一个好得做法。但是通常得关键字都是字符串。则散列函数有以下方法可以考虑。</p>
+<h3 id="5-2-1-散列函数实现方案一">5.2.1 散列函数实现方案一</h3>
+<blockquote>
+<p>把字符串得ASCII码或者Unicode码的值相加。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(String key, <span class="type">int</span> tableSize)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">hashVal</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; key.length(); i++) &#123;</span><br><span class="line">        hashVal += key.charAt(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> hashVal % tableSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  以上函数，实现简单，计算方便，但是如果表很大，则表的的高位利用率较低，导致冲突率增大。<br>
+假设表的大小是一个素数：tableSize = 10007，并假设所有关键字至多8个字符(ASCII字符)，则该散列函数只能计算得到 0~1016（127*8）范围内的值。之后对tableSize 进行取余操作，导致1017之后的数是一定取不到的。从而分配不到高位的数组上去。</p>
+<div class="alert alert-info"><div class="icon"><i class="fa fa-info"></i></div><div class="text"><p>Java的散列表如HashMap等只会进行扩容，并不会缩小数组，如果采用ASCII码方案，HashMap的数组扩容后，使用不满，可能导致上述的情况发生。</p>
+</div></div>
+<h3 id="5-2-2-散列函数实现方案二">5.2.2 散列函数实现方案二</h3>
+<blockquote>
+<p>假设key至少有三个字符，只考察前三个字符，将ASCII码乘起来得到一个整数</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hash2</span><span class="params">(String key, <span class="type">int</span> tableSize)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (key.charAt(<span class="number">0</span>) + <span class="number">27</span> * key.charAt(<span class="number">1</span>) + <span class="number">27</span> * <span class="number">27</span> * key.charAt(<span class="number">2</span>)) % tableSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  值27表示ASCII字符加一个空格，第一个字符就是本来的值，第二个字符是27 * 原值，第三个字符是27*27*原值。假设在完全随机的情况下，则3个字符的组合有19683种组合的可能。大于tableSize = 10007，则可以均匀分布。但是单词是有一定规律的，并不是均匀分布的。根据统计单词的前三个字母只有2851种组合，所以这种方法还是不适合。</p>
+<div class="alert alert-info"><div class="icon"><i class="fa fa-info"></i></div><div class="text"><p>Java的HashMap的数组最大为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>30</mn></msup></mrow><annotation encoding="application/x-tex">2^{30}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></span>，如果采用这种方案，最大可能需要所有计算和大于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>30</mn></msup></mrow><annotation encoding="application/x-tex">2^{30}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></span>的情况，需要7位的情况。</p>
+</div></div>
+<h3 id="5-2-3-散列函数实现方案三">5.2.3 散列函数实现方案三</h3>
+<blockquote>
+<p>所有字符参与计算，计算<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>k</mi><mi>e</mi><mi>y</mi><mi>S</mi><mi>i</mi><mi>z</mi><mi>e</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>K</mi><mi>e</mi><mi>y</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo>∗</mo><mn>3</mn><msup><mn>7</mn><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">\sum_{i=0}^{keySize - 1} Key[i]* 37^i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2887179999999998em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9890079999999999em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029000000000005em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span><span class="mord mathdefault mtight" style="margin-right:0.05764em;">S</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span><span class="mord mathdefault mtight">e</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.824664em;vertical-align:0em;"></span><span class="mord">3</span><span class="mord"><span class="mord">7</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.824664em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span></span></span></span></span></span></span>，使用horner法则 计算一个37的n次多项式,37是一个质数。</p>
+</blockquote>
+<p>  根据horner法则计算一个37的多项式：例如：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>k</mi></msub><mo>=</mo><msub><mi>k</mi><mn>0</mn></msub><mo>+</mo><mn>37</mn><msub><mi>k</mi><mn>1</mn></msub><mo>+</mo><mn>3</mn><msup><mn>7</mn><mn>2</mn></msup><msub><mi>k</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">h_k = k_0 + 37k_1 + 37^{2}k_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord">3</span><span class="mord">7</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.964108em;vertical-align:-0.15em;"></span><span class="mord">3</span><span class="mord"><span class="mord">7</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，则根据horner法则可以转为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>k</mi></msub><mo>=</mo><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msub><mi>k</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>∗</mo><mn>37</mn><mo>+</mo><msub><mi>k</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo>∗</mo><mn>37</mn><mo>+</mo><msub><mi>k</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">h_k = ((k_2) * 37 + k_1)*37 + k_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mord">7</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mord">7</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，可以简化计算复杂度。将其扩展到n项式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">hash3</span><span class="params">(String key, <span class="type">int</span> tableSize)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">hashVal</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; key.length(); i++) &#123;</span><br><span class="line">        hashVal += <span class="number">37</span> * hashVal + key.charAt(i);</span><br><span class="line">    &#125;</span><br><span class="line">    hashVal %= tableSize;</span><br><span class="line">    <span class="comment">// hashVal可能会存在int溢出的问题，导致为负数，因为取余tableSize后，则hashVal绝对值一定小于tableSize，相加将其变正即可</span></span><br><span class="line">    <span class="keyword">if</span> (hashVal &lt; <span class="number">0</span> ) &#123;</span><br><span class="line">        hashVal += tableSize;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> hashVal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  改散列函数基本可用，且实现简单。但是如果关键字特别长，则计算耗时特别多，一个行之有效的方法是只取奇数位置的字符串进行计算。不能只取部分的原因是，例如地址之类的，前半部分都是一样的。</p>
+<h2 id="5-3-哈希冲突之分离链接法">5.3 哈希冲突之分离链接法</h2>
+<blockquote>
+<p>将散列到数组同一个位置上的所有元素都保留到同一个列表中。并连接到数组对应下标上的位置(数组中并不存储元素，只存储于列表)</p>
+</blockquote>
+<h3 id="5-3-1-具体操作">5.3.1 具体操作</h3>
+<p>  为简化操作，这里假设关键字是前10个完全平方数，并假设散列函数是hash(x) = x mod 10（表的大小不是素数(是10)，这里是为简化操作）。<br>
+<img src="/2022/04/10/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95/分离链接散列表.png" alt="分离链接散列表" style="zoom:80%;"><br>
+  先计算出hash，确定应该是数组的哪个下标的位置，然后遍历该下标的链表。如果执行插入，则查看当前插入的元素是否已经在链表上，不在则将值插入到链表头(最近操作的值，在未来的使用概率越大，可以加快查找)。</p>
+<div class="alert alert-info"><div class="icon"><i class="fa fa-info"></i></div><div class="text"><p>Jdk8的hashMap从之前的头插法改为尾插法，是为了解决多线程下，hashMap扩容时rehash时导致的链表成环的问题(并发请用correntHashMap)。jdk8及之后改为了尾插法。</p>
+</div></div>
+<p>  本次实现的对象，必须实现equals方法于hashCode方法。hashCode用来计算判断应该链在哪条链表下，equals用于在hsah冲突后判断是否时同一个对象。如下是一个实现。</p>
+<div class="xControl">
+    <div class="xHeading"><div class="xIcon"><i class="fa fa-plus"></i></div><span>链接法的大部分实现</span></div>
+    <div class="xContent"><div class="inner">
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SeparateChainingHashTable</span>&lt;AnyType&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_TABLE_SIZE</span> <span class="operator">=</span> <span class="number">101</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * List数组,数组的每个位置准出List(链表)，就是之前说的hash表的数组</span></span><br><span class="line"><span class="comment">     * 位置上的链表，就是链接上去的链表</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;AnyType&gt;[] theLists;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> currentSize;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 无参构造调用有参构造，并设置默认值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SeparateChainingHashTable</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// this指代本类，类名()就是构造方法</span></span><br><span class="line">        <span class="built_in">this</span>(DEFAULT_TABLE_SIZE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 数组链表的构造方法</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> size 数组的长度</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SeparateChainingHashTable</span><span class="params">(<span class="type">int</span> size)</span> &#123;</span><br><span class="line">        <span class="comment">// 初始化指定长度的链表数组</span></span><br><span class="line">        theLists = <span class="keyword">new</span> <span class="title class_">LinkedList</span>[nextPrime(size)];</span><br><span class="line">        <span class="comment">// 给数组上的每一个位置创建链表</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; theLists.length; i++) &#123;</span><br><span class="line">            theLists[i] = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 计算hash值，并计算出应该插入数组上的哪个下标的链表</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> x 要计算插入位置的元素</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 要插入位置的下标</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">myHash</span><span class="params">(AnyType x)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">hashVal</span> <span class="operator">=</span> x.hashCode();</span><br><span class="line">        hashVal %= theLists.length;</span><br><span class="line">        <span class="keyword">if</span> (hashVal &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            hashVal += theLists.length;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> hashVal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 扩容并进行reHash</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">reHash</span><span class="params">()</span> &#123;</span><br><span class="line">        List&lt;AnyType&gt;[] oldLists = theLists;</span><br><span class="line">        <span class="comment">// new创建的新的list</span></span><br><span class="line">        theLists = <span class="keyword">new</span> <span class="title class_">List</span>[nextPrime(<span class="number">2</span> * theLists.length)];</span><br><span class="line">        <span class="comment">// 创建链表</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; theLists.length; j++) &#123;</span><br><span class="line">            theLists[j] = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        currentSize = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 将所有oldList中的元素插入新的List</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; oldLists.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (AnyType item : oldLists[i]) &#123;</span><br><span class="line">                insert(item);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 插入元素</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> x 待插入的元素</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">(AnyType x)</span> &#123;</span><br><span class="line">        <span class="comment">// 获取x应该插入的那个链表</span></span><br><span class="line">        List&lt;AnyType&gt; whichList = theLists[myHash(x)];</span><br><span class="line">        <span class="keyword">if</span> (!whichList.contains(x)) &#123;</span><br><span class="line">            whichList.add(x);</span><br><span class="line">            <span class="comment">// 每插入一个元素currentSize就会加1，当currentSize大于数组长度后，就会rehash扩容</span></span><br><span class="line">            currentSize += <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (currentSize &gt; theLists.length) &#123;</span><br><span class="line">                reHash();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 判断整个数组链表是否包含某个元素</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> x 要查询的元素</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true如果包含</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(AnyType x)</span> &#123;</span><br><span class="line">        <span class="comment">// 计算在那条链表</span></span><br><span class="line">        List&lt;AnyType&gt; whichList = theLists[myHash(x)];</span><br><span class="line">        <span class="keyword">return</span> whichList.contains(x);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 删除元素x</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> x 待删除的元素</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">remove</span><span class="params">(AnyType x)</span> &#123;</span><br><span class="line">        List&lt;AnyType&gt; whichList = theLists[myHash(x)];</span><br><span class="line">        <span class="keyword">if</span> (whichList.contains(x)) &#123;</span><br><span class="line">            whichList.remove(x);</span><br><span class="line">            currentSize--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">makeEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; theLists.length; i++) &#123;</span><br><span class="line">            theLists[i].clear();</span><br><span class="line">        &#125;</span><br><span class="line">        currentSize = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+    </div></div>
+    </div>
+<blockquote>
+<p>装填因子<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span>：散列表中的元素个数与数组大小的比值</p>
+</blockquote>
+<p>  上例的装填因子<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span>=1.0，链表的平均长度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span>(计算方法如上定义，平均每个列表有多少个元素)，一次平均查找需要1+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\lambda / 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">λ</span><span class="mord">/</span><span class="mord">2</span></span></span></span>。由此可以得出，表大小对查找效率基本无影响，影响较大的是装填因子。分离散列的一般做法是让<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span> = 1，</p>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://songbirds.top/2022/04/10/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://songbirds.top/2022/04/10/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95/";
+            const title         = "「散列函数与分离链接法」";
+            const excerpt       = `《数据结构与算法分析Java语言描述》第五章5.2与5.3节读书笔记`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" rel="tag">数据结构与算法</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2022-04-17T05:34:49.464Z" itemprop="dateModified">最后编辑：2022-04-17</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Debian11安装playwright依赖缺失问题解决" href="/2022/04/10/Debian11安装playwright依赖缺失问题解决/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 不使用链表的散列" href="/2022/04/17/不使用链表的散列/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments lazy-load bg-image"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'vEBGC4VHVhyutyONIB45BVcx-gzGzoHsz',
+                appKey: 'HiWD9QjgIOJLLqiiSMmvw0uU',
+                visitor: false,
+                enableQQ: false,
+                path: '/2022/04/10/%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E4%B8%8E%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95/',
+				placeholder: '',
+				requiredFields: ['']
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = '/vendors/valine@1.4.18/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.svg" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">就想着,写点东西而已</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                41
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E6%95%A3%E5%88%97"><span class="toc-text">5.1 散列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0"><span class="toc-text">5.2 散列函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-1-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E4%B8%80"><span class="toc-text">5.2.1 散列函数实现方案一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-2-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E4%BA%8C"><span class="toc-text">5.2.2 散列函数实现方案二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-3-%E6%95%A3%E5%88%97%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E4%B8%89"><span class="toc-text">5.2.3 散列函数实现方案三</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81%E4%B9%8B%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%E6%B3%95"><span class="toc-text">5.3 哈希冲突之分离链接法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-1-%E5%85%B7%E4%BD%93%E6%93%8D%E4%BD%9C"><span class="toc-text">5.3.1 具体操作</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/">cs基础</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Vue/">Vue</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/sql/">sql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/">站点相关</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">2</span></li></ul></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/ElementUI/" style="font-size: 0.65em;">ElementUI</a> <a href="/tags/Jvm/" style="font-size: 0.7em;">Jvm</a> <a href="/tags/Mysql/" style="font-size: 0.7em;">Mysql</a> <a href="/tags/Vue/" style="font-size: 0.65em;">Vue</a> <a href="/tags/ajax/" style="font-size: 0.65em;">ajax</a> <a href="/tags/debian/" style="font-size: 0.6em;">debian</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 0.6em;">java基础</a> <a href="/tags/spring/" style="font-size: 0.65em;">spring</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 0.6em;">中间件</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 0.8em;">数据结构与算法</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 0.75em;">算法</a>
+      </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2023 Songbirds 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by songbirds.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="746911472"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

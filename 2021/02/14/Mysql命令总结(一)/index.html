@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/avatar.svg">
+  
+  <title>Mysql命令总结(一) | Songbirds</title>
+  <meta name="author" content="songbirds" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Mysql" />
+  
+  <meta name="description" content="版权声明：本文转载自一千行 MySQL 学习笔记，并在一定程度上进行了增删改。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql命令总结(一)">
+<meta property="og:url" content="http://songbirds.top/2021/02/14/Mysql%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="Songbirds">
+<meta property="og:description" content="版权声明：本文转载自一千行 MySQL 学习笔记，并在一定程度上进行了增删改。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://songbirds.top/images/avatar.svg">
+<meta property="article:published_time" content="2021-02-14T11:57:43.000Z">
+<meta property="article:modified_time" content="2021-10-24T06:47:15.525Z">
+<meta property="article:author" content="songbirds">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://songbirds.top/images/avatar.svg">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('/images/banner.webp');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/bg.webp');
+        }
+      }
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.2.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                    
+                                        
+                                            <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/archives/"><i class="fa fa-file"></i>归档</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/tags/"><i class="fa fa-tags"></i>标签</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/friends/"><i class="fa fa-paw"></i>友链</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/todo/"><i class="fa fa-hourglass-start"></i>TODO</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/bangumis/"><i class="fa fa-television"></i>追番</a></li>
+                                        
+                                    
+                                        
+                                            <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                                        
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Songbirds</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Songbirds</h2> <br />
+                        <span>春</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="http://songbirds.top/2021/02/14/Mysql%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93(%E4%B8%80)/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Mysql命令总结(一)</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2021-02-14T11:57:43.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2021-02-14</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">songbirds</span>
+                </li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~13.61K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1635058035525"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql"><span class="toc-number">1.</span> <span class="toc-text">mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.1.</span> <span class="toc-text">一、基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.</span> <span class="toc-text">二、数据库的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-%E8%A1%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.</span> <span class="toc-text">三、表操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-number">1.4.</span> <span class="toc-text">四、数据操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD-select"><span class="toc-number">1.5.</span> <span class="toc-text">六、SELECT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83-union-%E6%B3%A8%E6%84%8F%E4%B8%8Ejoin%E5%8C%BA%E5%88%AB"><span class="toc-number">1.6.</span> <span class="toc-text">七、UNION(注意与join区别)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB-%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.7.</span> <span class="toc-text">八、子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D-%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2-join"><span class="toc-number">1.8.</span> <span class="toc-text">九、连接查询(join)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81-truncate"><span class="toc-number">1.9.</span> <span class="toc-text">十、TRUNCATE</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p><strong>版权声明</strong>：本文转载自<a target="_blank" rel="noopener" href="https://shockerli.net/post/1000-line-mysql-note/">一千行 MySQL 学习笔记</a>，并在一定程度上进行了<strong>增删改</strong>。</p>
+<span id="more"></span>
+<h2 id="mysql">mysql</h2>
+<p><strong>注：所有操作基于day01数据库</strong></p>
+<p><strong>注：所有sql命令中的 [字段] 意为可选字段</strong></p>
+<p>创建表(<span style="color:red">以下表均为虚构</span>)：</p>
+<p><strong>user</strong>表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> NAMES utf8mb4;</span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for user</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> `<span class="keyword">user</span>`;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `<span class="keyword">user</span>`  (</span><br><span class="line">  `id` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  `name` <span class="type">varchar</span>(<span class="number">30</span>) <span class="type">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `age` <span class="type">int</span>(<span class="number">10</span>) <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `money` <span class="keyword">double</span>(<span class="number">10</span>, <span class="number">2</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `score` <span class="type">int</span>(<span class="number">8</span>) <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`id`) <span class="keyword">USING</span> BTREE,</span><br><span class="line">  <span class="keyword">UNIQUE</span> INDEX `money`(`money`) <span class="keyword">USING</span> BTREE,</span><br><span class="line">  INDEX `normalIndex`(`name`) <span class="keyword">USING</span> BTREE</span><br><span class="line">) ENGINE <span class="operator">=</span> InnoDB AUTO_INCREMENT <span class="operator">=</span> <span class="number">8</span> <span class="type">CHARACTER</span> <span class="keyword">SET</span> <span class="operator">=</span> utf8 <span class="keyword">COLLATE</span> <span class="operator">=</span> utf8_general_ci ROW_FORMAT <span class="operator">=</span> Compact;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of user</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `<span class="keyword">user</span>` <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="number">24</span>, <span class="number">1000.00</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `<span class="keyword">user</span>` <span class="keyword">VALUES</span> (<span class="number">2</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="keyword">NULL</span>, <span class="number">2000.00</span>, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `<span class="keyword">user</span>` <span class="keyword">VALUES</span> (<span class="number">3</span>, <span class="string">&#x27;未设置&#x27;</span>, <span class="number">18</span>, <span class="number">0.00</span>, <span class="number">7</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `<span class="keyword">user</span>` <span class="keyword">VALUES</span> (<span class="number">4</span>, <span class="string">&#x27;王五&#x27;</span>, <span class="number">18</span>, <span class="number">3000.00</span>, <span class="number">6</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `<span class="keyword">user</span>` <span class="keyword">VALUES</span> (<span class="number">6</span>, <span class="string">&#x27;田七&#x27;</span>, <span class="number">18</span>, <span class="number">3500.00</span>, <span class="number">9</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `<span class="keyword">user</span>` <span class="keyword">VALUES</span> (<span class="number">7</span>, <span class="string">&#x27;田七&#x27;</span>, <span class="number">17</span>, <span class="number">4100.00</span>, <span class="number">9</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS <span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>t_user表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> NAMES utf8mb4;</span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for t_user</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> `t_user`;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `t_user`  (</span><br><span class="line">  `id` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  `username` <span class="type">varchar</span>(<span class="number">20</span>) <span class="type">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `age` <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`id`) <span class="keyword">USING</span> BTREE</span><br><span class="line">) ENGINE <span class="operator">=</span> InnoDB AUTO_INCREMENT <span class="operator">=</span> <span class="number">4</span> <span class="type">CHARACTER</span> <span class="keyword">SET</span> <span class="operator">=</span> utf8 <span class="keyword">COLLATE</span> <span class="operator">=</span> utf8_general_ci ROW_FORMAT <span class="operator">=</span> Compact;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of t_user</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `t_user` <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="string">&#x27;张三&#x27;</span>, <span class="number">23</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `t_user` <span class="keyword">VALUES</span> (<span class="number">2</span>, <span class="string">&#x27;李四&#x27;</span>, <span class="number">20</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `t_user` <span class="keyword">VALUES</span> (<span class="number">3</span>, <span class="string">&#x27;王五&#x27;</span>, <span class="number">25</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>t_money表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> NAMES utf8mb4;</span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for t_money</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> `t_money`;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `t_money`  (</span><br><span class="line">  `id` <span class="type">int</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  `money` <span class="keyword">double</span>(<span class="number">40</span>, <span class="number">0</span>) <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`id`) <span class="keyword">USING</span> BTREE</span><br><span class="line">) ENGINE <span class="operator">=</span> InnoDB AUTO_INCREMENT <span class="operator">=</span> <span class="number">4</span> <span class="type">CHARACTER</span> <span class="keyword">SET</span> <span class="operator">=</span> utf8 <span class="keyword">COLLATE</span> <span class="operator">=</span> utf8_general_ci ROW_FORMAT <span class="operator">=</span> Compact;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of t_money</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `t_money` <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="number">100</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `t_money` <span class="keyword">VALUES</span> (<span class="number">2</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `t_money` <span class="keyword">VALUES</span> (<span class="number">3</span>, <span class="number">300</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="一-基本操作">一、基本操作</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 启动MySQL</span></span><br><span class="line">    net <span class="keyword">start</span> mysql;</span><br><span class="line"><span class="comment">-- 创建Windows服务</span></span><br><span class="line">    sc <span class="keyword">create</span> mysql binPath<span class="operator">=</span> mysqld_bin_path;(注意：等号与值之间有空格)</span><br><span class="line"><span class="comment">/* 连接与断开服务器 */</span></span><br><span class="line">    mysql <span class="operator">-</span>h 地址 <span class="operator">-</span>P 端口 <span class="operator">-</span>u 用户名 <span class="operator">-</span>p 密码;</span><br><span class="line">    <span class="keyword">SHOW</span> PROCESSLIST <span class="comment">-- 显示哪些线程正在运行</span></span><br><span class="line">    <span class="keyword">SHOW</span> VARIABLES <span class="comment">-- 显示系统变量信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 停止MySQL</span></span><br><span class="line">    net stop mysql;</span><br></pre></td></tr></table></figure>
+<h3 id="二-数据库的操作">二、数据库的操作</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看所有已存在的数据库</span></span><br><span class="line">    <span class="keyword">show</span> databases;</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- 创建数据库</span></span><br><span class="line">    <span class="keyword">create</span> database[if <span class="keyword">not</span> <span class="keyword">exists</span>] 数据库名 数据库选项</span><br><span class="line">    数据库选项：</span><br><span class="line">        <span class="type">CHARACTER</span> <span class="keyword">SET</span> charset_name</span><br><span class="line">        <span class="keyword">COLLATE</span> collation_name</span><br><span class="line">    <span class="comment">-- 实例：如果名为day01的数据库不存在，就创建，创建默认编码为utf8，排序规则为utf8_general_ci</span></span><br><span class="line">    <span class="keyword">CREATE</span> DATABASE IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> day01 <span class="keyword">DEFAULT</span> CHARSET utf8 <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- 使用该数据库</span></span><br><span class="line">    use 数据库名;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看当前选中使用的数据库</span></span><br><span class="line">    <span class="keyword">select</span> database();</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看指定的数据库数据库信息</span></span><br><span class="line">    <span class="keyword">show</span> <span class="keyword">create</span> database 数据库名;</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- 删除数据库</span></span><br><span class="line">    <span class="keyword">drop</span> database[if <span class="keyword">exists</span>] 数据库名;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<h3 id="三-表操作">三、表操作</h3>
+<ol>
+<li>记忆：操作表，(不操作表的数据)，都需要加上table参数</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表</span></span><br><span class="line">    <span class="keyword">CREATE</span> [TEMPORARY] <span class="keyword">TABLE</span>[ IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] [库名.]表名 ( 表的结构定义 )[ 表选项]</span><br><span class="line">    <span class="comment">-- TEMPORARY 表示创建临时表，会话结束后消失</span></span><br><span class="line">    <span class="comment">-- 表结构定义：</span></span><br><span class="line">        字段名 数据类型 [<span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="operator">|</span> <span class="keyword">NULL</span>] [<span class="keyword">DEFAULT</span> default_value] [AUTO_INCREMENT] [<span class="keyword">UNIQUE</span> [KEY] <span class="operator">|</span> [<span class="keyword">PRIMARY</span>] KEY] [COMMENT <span class="string">&#x27;string&#x27;</span>]</span><br><span class="line">        [<span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="operator">|</span> <span class="keyword">NULL</span>]：不能为空<span class="operator">/</span>可以为空(默认)</span><br><span class="line">        [<span class="keyword">DEFAULT</span> default_value]：如果为空则自动设置值为default_value</span><br><span class="line">        [AUTO_INCREMENT] ：自增长，一般用于主键id</span><br><span class="line">        [<span class="keyword">UNIQUE</span> [KEY]：唯一约束，同主键一样，值不能重复，但是可以设置多个</span><br><span class="line">        [<span class="keyword">PRIMARY</span>] KEY]：主键</span><br><span class="line">        [COMMENT <span class="string">&#x27;string&#x27;</span>]：表注释</span><br><span class="line">    <span class="comment">-- 实例：</span></span><br><span class="line">      <span class="comment">-- 如果不存在就创建 user表(避免存在报错)</span></span><br><span class="line">	<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> if <span class="keyword">not</span> <span class="keyword">EXISTS</span> <span class="keyword">user</span>(</span><br><span class="line">		<span class="comment">-- 创建自增长id主键</span></span><br><span class="line">		id <span class="type">int</span> <span class="keyword">PRIMARY</span> key auto_increment,</span><br><span class="line">		<span class="comment">-- 创建string类型姓名不能为空，默认值未&#x27;未设置&#x27;，注释：姓名</span></span><br><span class="line">		name <span class="type">VARCHAR</span>(<span class="number">30</span>) <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">DEFAULT</span> <span class="string">&#x27;未设置&#x27;</span> COMMENT <span class="string">&#x27;姓名&#x27;</span>,</span><br><span class="line">		<span class="comment">-- 创建string类型mone不能为空，并且唯一约束(如果可以为null，是允许存在多个null的)</span></span><br><span class="line">		money <span class="keyword">DOUBLE</span>(<span class="number">10</span>,<span class="number">2</span>) <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">UNIQUE</span></span><br><span class="line">	)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">-- 查看所有表</span></span><br><span class="line">    <span class="keyword">show</span> tables </span><br><span class="line">    <span class="keyword">show</span> tables <span class="keyword">from</span> 数据库名</span><br><span class="line">    <span class="comment">-- 查看表中数据就是sql语句select *;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表</span></span><br><span class="line">    <span class="comment">-- 修改表本身</span></span><br><span class="line">        <span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 表名 表的选项</span><br><span class="line">        eg：<span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 表名 ENGINE<span class="operator">=</span>MYISAM; (将表的引擎改为myisam)</span><br><span class="line">    <span class="comment">-- 对表进行重命名</span></span><br><span class="line">        RENAME <span class="keyword">TABLE</span> 原表名 <span class="keyword">TO</span> 新表名;</span><br><span class="line">        RENAME <span class="keyword">TABLE</span> 原表名 <span class="keyword">TO</span> 库名.表名 (可以将表移动到另一个数据库)</span><br><span class="line">    <span class="comment">-- 修改表的字段(ALTER TABLE 语法)</span></span><br><span class="line">        <span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 表名 操作名</span><br><span class="line">        <span class="comment">-- 操作名</span></span><br><span class="line">            <span class="keyword">ADD</span> [<span class="keyword">COLUMN</span>] 字段定义			 <span class="comment">-- 增加字段</span></span><br><span class="line">                AFTER 字段名				 <span class="comment">-- 在xx之后增加字段</span></span><br><span class="line">                <span class="keyword">FIRST</span>				  	   <span class="comment">-- 增加在第一个位置</span></span><br><span class="line">            <span class="comment">-- 例：ALTER TABLE `user` ADD score INT(8);  给user表添加一个score字段</span></span><br><span class="line">            <span class="keyword">ADD</span> <span class="keyword">PRIMARY</span> KEY			   	    <span class="comment">-- 创建主键</span></span><br><span class="line">            <span class="keyword">ADD</span> <span class="keyword">UNIQUE</span> [索引名] (字段名)      <span class="comment">-- 创建唯一索引</span></span><br><span class="line">            <span class="keyword">ADD</span> INDEX [索引名] (字段名)        <span class="comment">-- 创建普通索引</span></span><br><span class="line">            <span class="keyword">DROP</span>[ <span class="keyword">COLUMN</span>] 字段名              <span class="comment">-- 删除字段</span></span><br><span class="line">            MODIFY[ <span class="keyword">COLUMN</span>] 字段名 字段属性     <span class="comment">-- 支持对字段属性进行修改，不能修改字段名(所有原有属性也需写上)</span></span><br><span class="line">            CHANGE[ <span class="keyword">COLUMN</span>] 原字段名 新字段名 字段属性      <span class="comment">-- 支持对字段名修改</span></span><br><span class="line">            <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY     <span class="comment">-- 删除主键(删除主键前需删除其AUTO_INCREMENT属性)</span></span><br><span class="line">            <span class="keyword">DROP</span> INDEX 索引名     <span class="comment">-- 删除索引</span></span><br><span class="line">            <span class="keyword">DROP</span> <span class="keyword">FOREIGN</span> KEY 外键    <span class="comment">-- 删除外键</span></span><br><span class="line">            </span><br><span class="line"><span class="comment">-- 删除表</span></span><br><span class="line">    <span class="keyword">DROP</span> <span class="keyword">TABLE</span>[ IF <span class="keyword">EXISTS</span>] 表名 ...</span><br><span class="line"><span class="comment">-- 清空表数据</span></span><br><span class="line">    <span class="keyword">TRUNCATE</span> [<span class="keyword">TABLE</span>] 表名</span><br><span class="line"><span class="comment">-- 复制表结构</span></span><br><span class="line">    <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 表名 <span class="keyword">LIKE</span> 要复制的表名</span><br><span class="line"><span class="comment">-- 复制表结构和数据</span></span><br><span class="line">    <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 表名 [<span class="keyword">AS</span>] <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> 要复制的表名</span><br><span class="line"><span class="comment">-- 检查表是否有错误</span></span><br><span class="line">    <span class="keyword">CHECK</span> <span class="keyword">TABLE</span> tbl_name [, tbl_name] ... [option] ...</span><br><span class="line"><span class="comment">-- 优化表</span></span><br><span class="line">    OPTIMIZE [<span class="keyword">LOCAL</span> <span class="operator">|</span> NO_WRITE_TO_BINLOG] <span class="keyword">TABLE</span> tbl_name [, tbl_name] ...</span><br><span class="line"><span class="comment">-- 修复表</span></span><br><span class="line">    REPAIR [<span class="keyword">LOCAL</span> <span class="operator">|</span> NO_WRITE_TO_BINLOG] <span class="keyword">TABLE</span> tbl_name [, tbl_name] ... [QUICK] [EXTENDED] [USE_FRM]</span><br><span class="line"><span class="comment">-- 分析表</span></span><br><span class="line">    ANALYZE [<span class="keyword">LOCAL</span> <span class="operator">|</span> NO_WRITE_TO_BINLOG] <span class="keyword">TABLE</span> tbl_name [, tbl_name] ...</span><br></pre></td></tr></table></figure>
+<h3 id="四-数据操作">四、数据操作</h3>
+<ol>
+<li><span style="color:red">注意</span>：删改操作一定要加条件，否则就是删改整张表(准备跑路)</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 增</span></span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> 表名 [(字段列表)] <span class="keyword">VALUES</span> (值列表)[,(值列表),,,]</span><br><span class="line">    <span class="keyword">INSERT</span> <span class="keyword">INTO</span> 表名 <span class="keyword">SET</span> 字段名<span class="operator">=</span>值[,字段名<span class="operator">=</span>值,,,]   <span class="comment">-- 推荐上面</span></span><br><span class="line"><span class="comment">-- 删</span></span><br><span class="line">    <span class="keyword">DELETE</span> <span class="keyword">FROM</span> 表名 [删除条件的句子]</span><br><span class="line">    <span class="comment">-- 没有条件默认删除全部</span></span><br><span class="line"><span class="comment">-- 改</span></span><br><span class="line">    <span class="keyword">UPDATE</span> 表名 <span class="keyword">SET</span> 字段名<span class="operator">=</span>新值[,字段名<span class="operator">=</span>新值,,,] [更新条件]</span><br><span class="line">    <span class="comment">-- 没有条件默认更改全部</span></span><br><span class="line"><span class="comment">-- 查</span></span><br><span class="line">    <span class="keyword">SELECT</span> 字段列表 <span class="keyword">FROM</span> 表名 [查询条件]</span><br></pre></td></tr></table></figure>
+<h3 id="六-select">六、SELECT</h3>
+<ol>
+<li>select：创建一张临时的表，来存储查询到的数据</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> [<span class="keyword">ALL</span><span class="operator">|</span><span class="keyword">DISTINCT</span>] select_expr <span class="keyword">FROM</span> <span class="operator">-</span><span class="operator">&gt;</span> <span class="keyword">WHERE</span> <span class="operator">-</span><span class="operator">&gt;</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> [合计函数] <span class="operator">-</span><span class="operator">&gt;</span> <span class="keyword">HAVING</span> <span class="operator">-</span><span class="operator">&gt;</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="operator">-</span><span class="operator">&gt;</span> LIMIT</span><br><span class="line">    <span class="comment">-- 字段释义：</span></span><br><span class="line">        <span class="keyword">ALL</span>:展示查询到的所有数据，和不写效果一样</span><br><span class="line">        <span class="keyword">DISTINCT</span>:查询去重后的结果</span><br><span class="line">            <span class="comment">-- 注：SELECT DISTINCT * from 表名;    测试不起效果</span></span><br><span class="line">            <span class="comment">-- SELECT DISTINCT 字段名 FROM 表名	  创建一张只有某字段去重后的临时表(同样设置多个字段失效)</span></span><br><span class="line">        <span class="keyword">GROUP</span> <span class="keyword">BY</span> 字段名[<span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>]：将查询到的结果分组(实际效果相当于根据字段名去重后展示(抛弃重复字段后面的))</span><br><span class="line">		         配合某些例如<span class="built_in">count</span>()、<span class="built_in">avg</span>(字段名)可以达到分组展示的效果; [升序<span class="operator">|</span>降序]</span><br><span class="line">         <span class="keyword">HAVING</span>：对 <span class="keyword">GROUP</span> <span class="keyword">BY</span> 后的表再进行过滤</span><br><span class="line">         <span class="keyword">ORDER</span> <span class="keyword">BY</span> 字段名; 排序，只会根据字段名排序，不会去掉重复数据</span><br><span class="line">         LIMIT a,b：分页查询，a:起始行数(从<span class="number">0</span>开始计数)，分页查询页数 </span><br><span class="line">             <span class="comment">-- select * from user limit 1,3;   分页：从第2行开始，一次查询3个；</span></span><br><span class="line">			</span><br><span class="line">a. select_expr：</span><br><span class="line">    <span class="comment">-- 可以用*表示所有字段</span></span><br><span class="line">        <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span>;</span><br><span class="line">    <span class="comment">-- 可以使用表达式（计算公式、函数调用、字段也是个表达式） </span></span><br><span class="line">    <span class="comment">-- 备注：select就是创建一张临时的表，如果直接给数据(如下列的计算公式，函数调用now()等不从表中查的会直接创建到临时表中)</span></span><br><span class="line">        <span class="keyword">select</span> name, <span class="number">29</span><span class="operator">+</span><span class="number">25</span>, now() <span class="keyword">from</span> <span class="keyword">user</span>;</span><br><span class="line">    <span class="comment">-- 可以为每个列使用别名。适用于简化列标识，避免多个列标识符重复。</span></span><br><span class="line">        <span class="operator">-</span> 使用 <span class="keyword">as</span> 关键字，也可省略 as.</span><br><span class="line">        <span class="keyword">select</span> <span class="keyword">user</span><span class="operator">+</span><span class="number">10</span> <span class="keyword">as</span> add10 <span class="keyword">from</span> <span class="keyword">user</span>;</span><br><span class="line"> </span><br><span class="line">b. <span class="keyword">FROM</span> 子句</span><br><span class="line">    用于标识查询来源。</span><br><span class="line">    <span class="comment">-- 可以为表起别名。使用as关键字。</span></span><br><span class="line">        <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> tb1 <span class="keyword">AS</span> tt, tb2 <span class="keyword">AS</span> bb;</span><br><span class="line">    <span class="comment">-- from子句后，可以同时出现多个表。</span></span><br><span class="line">        <span class="comment">-- 多个表会横向叠加到一起，而数据会形成一个笛卡尔积。</span></span><br><span class="line">        <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> tb1, tb2;</span><br><span class="line">    <span class="comment">-- 向优化符提示如何选择索引</span></span><br><span class="line">        USE INDEX、IGNORE INDEX、FORCE INDEX :使用指定的索引，忽略一个或多个索引，强制使用指定索引</span><br><span class="line">        <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table1 USE INDEX (key1,key2) <span class="keyword">WHERE</span> key1<span class="operator">=</span><span class="number">1</span> <span class="keyword">AND</span> key2<span class="operator">=</span><span class="number">2</span> <span class="keyword">AND</span> key3<span class="operator">=</span><span class="number">3</span>;</span><br><span class="line">        <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> table1 IGNORE INDEX (key3) <span class="keyword">WHERE</span> key1<span class="operator">=</span><span class="number">1</span> <span class="keyword">AND</span> key2<span class="operator">=</span><span class="number">2</span> <span class="keyword">AND</span> key3<span class="operator">=</span><span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">c. <span class="keyword">WHERE</span> 子句</span><br><span class="line">    <span class="comment">-- 从from获得的数据源中进行筛选。</span></span><br><span class="line">    <span class="comment">-- 整型1表示真，0表示假。</span></span><br><span class="line">    <span class="comment">-- 表达式由运算符和运算数组成。</span></span><br><span class="line">        <span class="comment">-- 运算数：变量（字段）、值、函数返回值</span></span><br><span class="line">        <span class="comment">-- 运算符：</span></span><br><span class="line">            <span class="operator">=</span>, <span class="operator">&lt;=&gt;</span>,(等于);   <span class="operator">!=</span>, <span class="operator">&lt;&gt;</span>,(不等于，)    </span><br><span class="line">            	<span class="comment">-- 两靠近括号的后者，如果为true，结果为1，否则为0(可以判断是否位null的情况，建议使用is null来进行判断)</span></span><br><span class="line">            <span class="operator">&lt;=</span>,<span class="operator">&lt;</span>, <span class="operator">&gt;=</span>, <span class="operator">&gt;</span>,  <span class="operator">!</span>,(取符号相反)    <span class="operator">&amp;&amp;</span>,(同<span class="keyword">and</span>，但是用于逻辑判断) <span class="operator">||</span>,</span><br><span class="line">            (<span class="keyword">not</span>)<span class="keyword">in</span>,</span><br><span class="line">            	<span class="comment">-- (不)在集合中，例：select * from user where name in(&quot;张三&quot;,&quot;王五&quot;);查询(除)张三王五</span></span><br><span class="line">            (<span class="keyword">not</span>) <span class="keyword">like</span>,</span><br><span class="line">            	<span class="comment">-- (不)匹配的模糊查询，模糊查询使用%占多位符，_占一位符</span></span><br><span class="line">            (<span class="keyword">not</span>) <span class="keyword">between</span> <span class="keyword">and</span>, </span><br><span class="line">            	<span class="comment">-- 在A和B之间的数据</span></span><br><span class="line">            <span class="keyword">is</span> (<span class="keyword">not</span>),</span><br><span class="line">            	<span class="comment">-- 一般和null一起使用，用于判断是否位null</span></span><br><span class="line">            <span class="keyword">and</span>, <span class="keyword">or</span>, <span class="keyword">not</span>, </span><br><span class="line">            xor	</span><br><span class="line">            	<span class="comment">-- 逻辑异或，如果有null则为null，如果相同为0，不相同为1(一般不用)</span></span><br><span class="line">            <span class="keyword">is</span><span class="operator">/</span><span class="keyword">is</span> <span class="keyword">not</span> 加上ture<span class="operator">/</span><span class="literal">false</span><span class="operator">/</span><span class="literal">unknown</span>，检验某个值的真假</span><br><span class="line">            <span class="operator">&lt;=&gt;</span>与<span class="operator">&lt;&gt;</span>功能相同，<span class="operator">&lt;=&gt;</span>可用于<span class="keyword">null</span>比较</span><br><span class="line">            </span><br><span class="line">d. <span class="keyword">GROUP</span> <span class="keyword">BY</span> 子句, 分组子句</span><br><span class="line">    <span class="keyword">GROUP</span> <span class="keyword">BY</span> 字段<span class="operator">/</span>别名 [排序方式]</span><br><span class="line">    分组后会进行排序。升序：<span class="keyword">ASC</span>，降序：<span class="keyword">DESC</span></span><br><span class="line">    以下[合计函数]需配合 <span class="keyword">GROUP</span> <span class="keyword">BY</span> 使用：</span><br><span class="line">        count 返回不同的非<span class="keyword">NULL</span>值数目  <span class="built_in">count</span>(<span class="operator">*</span>)、<span class="built_in">count</span>(字段)</span><br><span class="line">            <span class="comment">-- 例：select name,count(*) from user group by name;  根据姓名分组查询总数</span></span><br><span class="line">        sum 求和</span><br><span class="line">            <span class="comment">-- 例：select age, sum(money) from user group by age; 根据年龄分组，计算每个年龄的总金钱</span></span><br><span class="line">        max 求最大值</span><br><span class="line">        min 求最小值</span><br><span class="line">        avg 求平均值</span><br><span class="line">        group_concat 返回带有来自一个组的连接的非<span class="keyword">NULL</span>值的字符串结果。组内字符串连接。(例如一个id对应多个分数，根据id分组后，所有分数显示拼接在一个表格中，默认用逗号拼接)(将多个数据以拼接的方式放入同一组)</span><br><span class="line">            <span class="comment">-- 例：SELECT name,GROUP_CONCAT( [DISTINCT] score) from user group by name;</span></span><br><span class="line">            <span class="comment">-- 解释：查询姓名，该姓名的所有 [去重] 分数(在同一个格子里显示默认逗号分割)，以姓名分组</span></span><br><span class="line">            <span class="comment">-- 例：SELECT name,GROUP_CONCAT(score ORDER BY score DESC   SEPARATOR &#x27;;&#x27;) FROM user GROUP BY `name`;</span></span><br><span class="line">            <span class="comment">-- 解释：查询姓名，该姓名的所有分数,同时指定分数排序方式(在同一个格子里显示)，指定以&#x27;;&#x27;分割，以姓名分组</span></span><br><span class="line"></span><br><span class="line">e. <span class="keyword">HAVING</span> 子句，条件子句(概括：<span class="keyword">having</span>可以接聚合函数，用于groupby 后；<span class="keyword">where</span>只能接数据库存在的值，一般用<span class="keyword">where</span>)</span><br><span class="line">    与 <span class="keyword">where</span> 功能、用法相同，执行时机不同。</span><br><span class="line">    <span class="keyword">where</span> 在开始时执行检测数据，对原数据进行过滤。</span><br><span class="line">    <span class="keyword">having</span> 对筛选出的结果再次进行过滤。</span><br><span class="line">    <span class="keyword">having</span> 字段必须是查询出来的，<span class="keyword">where</span> 字段必须是数据表存在的。</span><br><span class="line">    <span class="keyword">where</span> 不可以使用字段的别名，<span class="keyword">having</span> 可以。因为执行<span class="keyword">WHERE</span>代码时，可能尚未确定列值。</span><br><span class="line">    <span class="keyword">where</span> 不可以使用合计函数。一般需用合计函数才会用 <span class="keyword">having</span></span><br><span class="line">    <span class="keyword">SQL</span>标准要求<span class="keyword">HAVING</span>必须引用<span class="keyword">GROUP</span> <span class="keyword">BY</span>子句中的列或用于合计函数中的列。</span><br><span class="line">        <span class="comment">-- 例：SELECT `name`,sum(money) FROM user GROUP BY `name` HAVING sum(money)&gt;2000;</span></span><br><span class="line">        <span class="comment">-- 解释：查询姓名，总钱 通过姓名分组，并且分组之后总金额大于2000的</span></span><br><span class="line"></span><br><span class="line">f. <span class="keyword">ORDER</span> <span class="keyword">BY</span> 子句，排序子句</span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> 排序字段<span class="operator">/</span>别名 排序方式 [,排序字段<span class="operator">/</span>别名 排序方式]...</span><br><span class="line">        升序：<span class="keyword">ASC</span>，降序：<span class="keyword">DESC</span></span><br><span class="line"></span><br><span class="line">g. LIMIT 子句，限制结果数量子句(即分页查询)</span><br><span class="line">    仅对处理好的结果进行数量限制。将处理好的结果的看作是一个集合，按照记录出现的顺序，索引从<span class="number">0</span>开始。</span><br><span class="line">    limit 起始位置, 获取条数(第一行索引为<span class="number">0</span>)</span><br><span class="line">        省略第一个参数，表示从索引<span class="number">0</span>开始。limit 获取条数</span><br><span class="line">            <span class="comment">-- 例：SELECT * FROM user LIMIT 0,3; </span></span><br><span class="line">            <span class="comment">-- 解释：从索引0(第一个)开始，总共查3个</span></span><br><span class="line">h. <span class="keyword">DISTINCT</span>, <span class="keyword">ALL</span> 选项</span><br><span class="line">    <span class="keyword">distinct</span> 去除重复记录</span><br><span class="line">        默认为 <span class="keyword">all</span>, 全部记录</span><br></pre></td></tr></table></figure>
+<h3 id="七-union-注意与join区别">七、UNION(注意与join区别)</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* UNION */</span> <span class="comment">------------------</span></span><br><span class="line">    将多个<span class="keyword">select</span>查询的结果组合成一个结果集合。(两张表的两个列合并为同一个列)</span><br><span class="line">    <span class="keyword">SELECT</span> ... <span class="keyword">UNION</span> [<span class="keyword">ALL</span><span class="operator">|</span><span class="keyword">DISTINCT</span>] <span class="keyword">SELECT</span> ...</span><br><span class="line">        默认 <span class="keyword">DISTINCT</span> 方式，即所有返回的行都是唯一的(去重)</span><br><span class="line">        <span class="comment">-- UNION 语句：用于将 不同表 中相同列中查询的数据展示出来；（不包括重复数据）</span></span><br><span class="line">        <span class="comment">-- UNION ALL 语句：用于将 不同表 中相同列中查询的数据展示出来；（包括重复数据）</span></span><br><span class="line">            <span class="comment">-- 例：SELECT name FROM user UNION ALL (SELECT username FROM t_user);</span></span><br><span class="line">            <span class="comment">-- 解释：两张表的name列与username列放到临时表的名为name(名字以前面的为准)的列中</span></span><br><span class="line">         每个<span class="keyword">select</span>查询的字段列表(数量、类型)应一致，因为结果中的字段名以第一条<span class="keyword">select</span>语句为准。</span><br></pre></td></tr></table></figure>
+<h3 id="八-子查询">八、子查询</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 子查询需要用括号包括</span></span><br><span class="line"><span class="comment">-- from型</span></span><br><span class="line">    <span class="keyword">from</span>后要求是一张表或是子查询产生的临时表，</span><br><span class="line">        <span class="operator">-</span> 如果是生成的临时表，则必须给子查询产生的临时表取别名</span><br><span class="line">        <span class="comment">-- 例：select * from (select * from user where id&gt;1) as another_table where id&gt;2;</span></span><br><span class="line">        <span class="comment">-- 解释：user表中id&gt;1的组成一张临时表，取别名another_table，再查询这张临时表中id&gt;2的。</span></span><br><span class="line">			</span><br><span class="line"><span class="comment">-- where型</span></span><br><span class="line">    <span class="operator">-</span> <span class="keyword">where</span>后的子查询一个或多个值</span><br><span class="line">    <span class="operator">-</span> 可以不用给子查询起别名</span><br><span class="line">    <span class="operator">-</span> <span class="keyword">where</span>子查询的表不能用于更新删除</span><br><span class="line">        <span class="comment">-- 例：SELECT * FROM user WHERE money = (SELECT max(money) FROM `user`);</span></span><br><span class="line">        <span class="comment">-- 解释： 查询金额最多用户的所有信息</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">-- 列子查询</span></span><br><span class="line">            字查询的结果是一列</span><br><span class="line">            使用<span class="keyword">in</span>或<span class="keyword">not</span> <span class="keyword">in</span>完成查询</span><br><span class="line">                 <span class="comment">-- 例：SELECT * FROM user WHERE name in (SELECT `username` FROM t_user);</span></span><br><span class="line">                 <span class="comment">-- 解释：查询名字在t_user表中的人的信息</span></span><br><span class="line">             或使用<span class="keyword">exists</span> 和 <span class="keyword">not</span> <span class="keyword">exists</span> 条件，返回<span class="number">1</span>或<span class="number">0</span>。常用于判断条件。</span><br><span class="line">                 <span class="comment">-- 例：SELECT * FROM user WHERE EXISTS (SELECT * FROM t_user WHERE id&gt;3);</span></span><br><span class="line">                 <span class="comment">-- 解释：子查询：如果id&gt;3的查询结果有值，则EXISTS返回1(true),相当于只有主查询</span></span><br><span class="line">	    <span class="comment">-- 行子查询</span></span><br><span class="line">            子查询的的条件(结果)是一个行</span><br><span class="line">            <span class="comment">-- 例：select * from user where (name, age) in (select name, age from t_user);</span></span><br><span class="line">            <span class="comment">-- 解释：子查询的结果要匹配的条件有两个(name,age),一行</span></span><br><span class="line">        <span class="comment">-- 特殊运算符</span></span><br><span class="line">        <span class="operator">!=</span> <span class="keyword">all</span>()    相当于 <span class="keyword">not</span> <span class="keyword">in</span></span><br><span class="line">        <span class="operator">=</span> <span class="keyword">some</span>()    相当于 <span class="keyword">in</span>。<span class="keyword">any</span> 是 <span class="keyword">some</span> 的别名</span><br><span class="line">        <span class="operator">!=</span> <span class="keyword">some</span>()   不等同于 <span class="keyword">not</span> <span class="keyword">in</span>，不等于其中某一个</span><br><span class="line">        <span class="keyword">all</span>, <span class="keyword">some</span> 可以配合其他运算符一起使用。</span><br></pre></td></tr></table></figure>
+<h3 id="九-连接查询-join">九、连接查询(join)</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 将多个表的字段拼接成一张表</span></span><br><span class="line"><span class="comment">-- 内连接(inner join)</span></span><br><span class="line">    <span class="operator">-</span> 内连接只展示所有<span class="keyword">on</span>后面条件成立的列，不以哪一张表为准</span><br><span class="line">    <span class="operator">-</span> 默认即是内连接，可以省略<span class="keyword">inner</span>。</span><br><span class="line">    <span class="operator">-</span> 只有数据存在时才能发送连接。即连接结果不能出现空行。</span><br><span class="line">    <span class="keyword">on</span> 表示连接条件。其条件表达式与<span class="keyword">where</span>类似。也可以省略条件（表示条件永远为真）</span><br><span class="line">    <span class="keyword">where</span> 也可用<span class="keyword">where</span>表示连接条件。</span><br><span class="line">    还有 <span class="keyword">using</span>, 但需字段名相同。 <span class="keyword">using</span>(字段名)</span><br><span class="line">        <span class="comment">-- 例：SELECT * FROM user JOIN t_user on user.`name`=t_user.username;</span></span><br><span class="line">        <span class="comment">-- 解释：将user、t_user中name与username相同的列拼接到一张临时表(不以其中一张表为准)，不同的列都不展示</span></span><br><span class="line">    <span class="comment">-- 交叉连接 cross join</span></span><br><span class="line">        即，没有条件的内连接。</span><br><span class="line">        <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tb1 <span class="keyword">cross</span> <span class="keyword">join</span> tb2</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 外连接(outer join)</span></span><br><span class="line">    <span class="operator">-</span> 如果数据不存在，也会出现在结果中</span><br><span class="line">    <span class="comment">-- 左外连接 left join</span></span><br><span class="line">        以左边的表为准，左边的表的数据全部展示，如果右边表的数据如果不存在，用<span class="keyword">null</span>填充。</span><br><span class="line">            <span class="comment">-- 例：SELECT * FROM user left JOIN t_user on user.`name`=t_user.username;</span></span><br><span class="line">            <span class="comment">-- 解释：将左表user的数据全部展示，右表t_user中name与username相等的列拼接展示，如果不等处的值填null。</span></span><br><span class="line">    <span class="comment">-- 右外连接 right join</span></span><br><span class="line">        以右边的表为准，右边的表的数据全部展示，如果左边表的数据如果不存在，用<span class="keyword">null</span>填充。</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 自然连接(natural join)</span></span><br><span class="line">    自动判断连接条件完成连接。</span><br><span class="line">    相当于省略了<span class="keyword">using</span>，会自动查找相同字段名。</span><br><span class="line">    <span class="keyword">natural</span> <span class="keyword">join</span></span><br><span class="line">    <span class="keyword">natural</span> <span class="keyword">left</span> <span class="keyword">join</span></span><br><span class="line">    <span class="keyword">natural</span> <span class="keyword">right</span> <span class="keyword">join</span></span><br><span class="line"><span class="keyword">select</span> info.id, info.name, info.stu_num, extra_info.hobby, extra_info.sex <span class="keyword">from</span> info, extra_info <span class="keyword">where</span> info.stu_num <span class="operator">=</span> extra_info.stu_id;</span><br></pre></td></tr></table></figure>
+<h3 id="十-truncate">十、TRUNCATE</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* TRUNCATE */</span> <span class="comment">------------------</span></span><br><span class="line"><span class="keyword">TRUNCATE</span> [<span class="keyword">TABLE</span>] tbl_name</span><br><span class="line">    <span class="comment">-- 例：TRUNCATE TABLE test ;</span></span><br><span class="line">    <span class="comment">-- 解释：删除test表中的所有数据(但保留表结构)，类似如下两个步骤</span></span><br><span class="line">a.清空数据</span><br><span class="line">b.删除重建表</span><br><span class="line">区别：</span><br><span class="line"><span class="number">1</span>，<span class="keyword">truncate</span> 是删除表再创建，<span class="keyword">delete</span> 是逐条删除</span><br><span class="line"><span class="number">2</span>，<span class="keyword">truncate</span> 重置auto_increment的值。而<span class="keyword">delete</span>不会</span><br><span class="line"><span class="number">3</span>，<span class="keyword">truncate</span> 不知道删除了几条，而<span class="keyword">delete</span>知道。</span><br><span class="line"><span class="number">4</span>，当被用于带分区的表时，<span class="keyword">truncate</span> 会保留分区</span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "http://songbirds.top/2021/02/14/Mysql%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93(%E4%B8%80)/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "http://songbirds.top/2021/02/14/Mysql%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93(%E4%B8%80)/";
+            const title         = "「Mysql命令总结(一)」";
+            const excerpt       = `版权声明：本文转载自一千行 MySQL 学习笔记，并在一定程度上进行了增删改。`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Mysql/" rel="tag">Mysql</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2021-10-24T06:47:15.525Z" itemprop="dateModified">最后编辑：2021-10-24</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 三条sql语句记录" href="/2021/01/28/三条sql语句记录/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Mysql命令总结(二)" href="/2021/02/18/Mysql命令总结(二)/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments lazy-load bg-image"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'vEBGC4VHVhyutyONIB45BVcx-gzGzoHsz',
+                appKey: 'HiWD9QjgIOJLLqiiSMmvw0uU',
+                visitor: false,
+                enableQQ: false,
+                path: '/2021/02/14/Mysql%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93(%E4%B8%80)/',
+				placeholder: '',
+				requiredFields: ['']
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = '/vendors/valine@1.4.18/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.svg" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">就想着,写点东西而已</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                41
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql"><span class="toc-text">mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">一、基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-text">二、数据库的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-%E8%A1%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">三、表操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="toc-text">四、数据操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD-select"><span class="toc-text">六、SELECT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83-union-%E6%B3%A8%E6%84%8F%E4%B8%8Ejoin%E5%8C%BA%E5%88%AB"><span class="toc-text">七、UNION(注意与join区别)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB-%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">八、子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D-%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2-join"><span class="toc-text">九、连接查询(join)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81-truncate"><span class="toc-text">十、TRUNCATE</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/">cs基础</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">9</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Vue/">Vue</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/sql/">sql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/">站点相关</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">2</span></li></ul></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/ElementUI/" style="font-size: 0.65em;">ElementUI</a> <a href="/tags/Jvm/" style="font-size: 0.7em;">Jvm</a> <a href="/tags/Mysql/" style="font-size: 0.7em;">Mysql</a> <a href="/tags/Vue/" style="font-size: 0.65em;">Vue</a> <a href="/tags/ajax/" style="font-size: 0.65em;">ajax</a> <a href="/tags/debian/" style="font-size: 0.6em;">debian</a> <a href="/tags/java%E5%9F%BA%E7%A1%80/" style="font-size: 0.6em;">java基础</a> <a href="/tags/spring/" style="font-size: 0.65em;">spring</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 0.6em;">中间件</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 0.8em;">数据结构与算法</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 0.75em;">算法</a>
+      </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2023 Songbirds 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by songbirds.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+    <script async src="/js/candy.min.js"></script>
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="746911472"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
