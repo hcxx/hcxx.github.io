@@ -20,7 +20,7 @@
 注：Solor是另一个lucene封装库。</p>
 <p><a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/foreword_id.html">Elasticsearch: 权威指南 | Elastic</a>。中文文档，可能已经过时。</p>
 <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html">Elasticsearch Guide | Elastic</a>。英文文档。</p>
-<h2 id="1-安装elasticsearch">1. 安装elasticSearch</h2>
+<h2 id="1-安装elasticsearch">1.安装elasticSearch</h2>
 <p>docker命令可以参考<a href="https://blog.csdn.net/sxzlc/article/details/107676425">Docker命令_各种参数简介博客</a></p>
 <ol>
 <li>通过docker下载</li>
@@ -71,7 +71,78 @@
 </ol>
 <p>若安装成功，则可以直接访问kibana的地址。主机ip+port。此处为5601。若安装失败，使用<code>docker logs 容器id</code>查看日志。</p>
 <p><img src="/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/kibana%E8%AE%BF%E9%97%AE.webp" alt="kibana访问"></p>
-<h2 id="3-elasticsearch接口">3.elasticSearch接口</h2>
+<h2 id="3-elasticsearch概念">3.elasticSearch概念</h2>
+<h3 id="基本概念：">基本概念：</h3>
+<p>索引（indices）-------------------Databases 数据库<br>
+类型（type）----------------------Table 数据表，在indices下，可以定义一个或多个type。（ES8已移除）<br>
+文档（Document）---------------Row 行。以JSON的形式保存<br>
+字段（Field）---------------------Columns 列</p>
+<h3 id="正排索引：">正排索引：</h3>
+<p>是以文档对象的唯一 ID 作为索引，以文档内容作为记录的结构。例如关系型数据库的ID。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">docID</th>
+<th style="text-align:left">value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">动态规划</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">动态壁纸超好看</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">好看动态图</td>
+</tr>
+</tbody>
+</table>
+<h3 id="倒排索引">倒排索引</h3>
+<p>将文档内容中的单词作为索引，将包含该词的文档 docID 作为记录的结构。</p>
+<ol>
+<li>先经过正排索引，给文档编号，作为为唯一标识，如上正排索引的表中docID</li>
+<li>对字段进行分词。（因此有各种分词器）</li>
+<li>按分词建立倒排索引表。term为词，posting list为这个词在哪些docID的value中出现过</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">term</th>
+<th style="text-align:left">posting list</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">动态</td>
+<td style="text-align:left">1，2，3</td>
+</tr>
+<tr>
+<td style="text-align:left">规划</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">好看</td>
+<td style="text-align:left">2，3</td>
+</tr>
+<tr>
+<td style="text-align:left">壁纸</td>
+<td style="text-align:left">2</td>
+</tr>
+<tr>
+<td style="text-align:left">图</td>
+<td style="text-align:left">3</td>
+</tr>
+</tbody>
+</table>
+<p>这些词就是term，而存储原ID的是posting list，存储了所有符合某个term的文档id。</p>
+<p>当搜索  <strong>动态高清壁纸</strong>  的时候，ID=2的命中两次，ID=1、3分别命中1次。经过一些列算法，<strong>动态壁纸超好看</strong>  被选中。其他可以作为推荐。</p>
+<p>当然，这样的存储肯定会特别占用内存，搜索词term的的时候也会比较耗时，底层Lucene有自己更为复杂的实现。<br>
+PS：好吧，我就是不懂😭</p>
+<h2 id="4-elasticsearch接口">4.elasticSearch接口</h2>
 <p>其接口是RestFul风格的。</p>
 <ol>
 <li>查看cat命令</li>
