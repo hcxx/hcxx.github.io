@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://songbirds.top/images/avatar.svg">
 <meta property="article:published_time" content="2023-01-02T05:38:46.000Z">
-<meta property="article:modified_time" content="2023-03-10T14:59:30.965Z">
+<meta property="article:modified_time" content="2023-04-09T05:56:17.830Z">
 <meta property="article:author" content="songbirds">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -177,7 +177,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~4.76K
+                        ~5.05K
                     
                     字
                 </li>
@@ -188,7 +188,7 @@
             
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
                 <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1678460370965"></time> 前，其中的内容可能需要更新。</p></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1681019777830"></time> 前，其中的内容可能需要更新。</p></div>
             </div>
             
             
@@ -327,10 +327,12 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <li>直到标出所有素数<br>
 2 3 5 7 11 13 17 19 23</li>
 </ul>
+<p><strong>特别注意：筛法的方法建议写成静态的，然后静态调用。否则多次初始化会被LC卡掉。<br>
+另外大多数时候我们需要的最终结果集是一个SET。此筛法的ansList，不参与取值过程，可以直接改成set。</strong></p>
 
     </div>
     </div>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">eratosFlagPrime</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; ansList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="comment">// 筛选2到100的所有质数</span></span><br><span class="line">    <span class="comment">// 标记是否式质数，下标i代表数i，最大下标为100</span></span><br><span class="line">    Boolean[] primeArr = <span class="keyword">new</span> <span class="title class_">Boolean</span>[n + <span class="number">1</span>];</span><br><span class="line">    <span class="comment">// 如果为null则代表为质数，省去遍历一遍改为true的时间</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="comment">// 如果为null则为素数</span></span><br><span class="line">        <span class="keyword">if</span> (primeArr[i] == <span class="literal">null</span>) &#123;</span><br><span class="line">            ansList.add(i);</span><br><span class="line">            <span class="comment">// j 初始化为 2*i,每次遍历加一个i，相当于从2*i 到 k*i，从而划掉所有i的倍数</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">2</span> * i; j &lt;= n; j += i) &#123;</span><br><span class="line">                primeArr[j] = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ansList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置成静态，避免多次调用TLE</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Set&lt;Integer&gt; primeSet = eulerFlagPrime((<span class="type">int</span>) <span class="number">4e6</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title function_">eratosFlagPrime</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; ansList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="comment">// 筛选2到100的所有质数</span></span><br><span class="line">    <span class="comment">// 标记是否式质数，下标i代表数i，最大下标为100</span></span><br><span class="line">    Boolean[] primeArr = <span class="keyword">new</span> <span class="title class_">Boolean</span>[n + <span class="number">1</span>];</span><br><span class="line">    <span class="comment">// 如果为null则代表为质数，省去遍历一遍改为true的时间</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">2</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="comment">// 如果为null则为素数</span></span><br><span class="line">        <span class="keyword">if</span> (primeArr[i] == <span class="literal">null</span>) &#123;</span><br><span class="line">            ansList.add(i);</span><br><span class="line">            <span class="comment">// j 初始化为 2*i,每次遍历加一个i，相当于从2*i 到 k*i，从而划掉所有i的倍数</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">2</span> * i; j &lt;= n; j += i) &#123;</span><br><span class="line">                primeArr[j] = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ansList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="4-3-欧拉筛-线性筛">4.3 欧拉筛（线性筛）</h3>
 <p>欧拉筛是对埃氏筛的改进，避免重筛，提高效率。但代码会更加复杂，只做介绍。</p>
 <p>欧拉筛的核心思想就是确保每个合数只被最小质因数筛掉。或者说是被合数的最大因子筛掉。</p>
@@ -340,6 +342,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
         <p>比如说 1 ，2，3，4，5，6，7，8，9，10，11， 12<br>
 当 i=4时： primes = {2, 3}<br>
 此时i%2=0, 如果不结束内层循环的话,12会被3∗4筛掉， 当i=6时，12又会被2∗6筛掉。</p>
+<p><strong>特别注意：建议静态。同时ansList不能改成SET，在遍历ansList需要其有序，set会破坏这个有序。最后new HashSet&lt;&gt;(ansList)即可。</strong></p>
 
     </div>
     </div>
@@ -436,7 +439,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
                     <a class="tag-none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
                 </div>
                 <div class="pull-date">
-                    <time datetime="2023-03-10T14:59:30.965Z" itemprop="dateModified">最后编辑：2023-03-10</time>
+                    <time datetime="2023-04-09T05:56:17.830Z" itemprop="dateModified">最后编辑：2023-04-09</time>
                 </div>
             </div>
         </footer>
