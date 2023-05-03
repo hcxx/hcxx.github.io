@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <link rel="icon" href="/images/avatar.svg">
   
-  <title>elesticSearch基础 | Songbirds</title>
+  <title>elasticSearch基础 | Songbirds</title>
   <meta name="author" content="songbirds" />
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
@@ -18,14 +18,14 @@
   
   <meta name="description" content="elasticSearch简单介绍，注意，此笔记基于elasticsearch7版本，8版本已经移除type概念。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="elesticSearch基础">
-<meta property="og:url" content="http://songbirds.top/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:title" content="elasticSearch基础">
+<meta property="og:url" content="http://songbirds.top/2023/03/26/elasticSearch%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Songbirds">
 <meta property="og:description" content="elasticSearch简单介绍，注意，此笔记基于elasticsearch7版本，8版本已经移除type概念。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://songbirds.top/images/avatar.svg">
 <meta property="article:published_time" content="2023-03-26T15:04:06.000Z">
-<meta property="article:modified_time" content="2023-04-12T14:24:07.070Z">
+<meta property="article:modified_time" content="2023-04-22T15:22:02.209Z">
 <meta property="article:author" content="songbirds">
 <meta property="article:tag" content="中间件">
 <meta name="twitter:card" content="summary">
@@ -161,11 +161,11 @@
 
             <article itemscope itemtype="https://schema.org/Article">
     
-    <link itemprop="mainEntityOfPage" href="http://songbirds.top/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/">
+    <link itemprop="mainEntityOfPage" href="http://songbirds.top/2023/03/26/elasticSearch%E5%9F%BA%E7%A1%80/">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
-                <h1 class="kratos-entry-title text-center" itemprop="name headline">elesticSearch基础</h1>
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">elasticSearch基础</h1>
             
             
             <ul class="kratos-post-meta text-center">
@@ -188,7 +188,7 @@
             
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
                 <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1681309447070"></time> 前，其中的内容可能需要更新。</p></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1682176922209"></time> 前，其中的内容可能需要更新。</p></div>
             </div>
             
             
@@ -245,7 +245,7 @@
 <li>访问</li>
 </ol>
 <p>直接访问ip+端口，此处端口为上面设置的9200。若安装失败，使用<code>docker logs 容器id</code>查看日志。</p>
-<p><img src="/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/elasticSearch%E5%AE%89%E8%A3%85%E8%AE%BF%E9%97%AE.webp" alt="elasticSearch安装访问"></p>
+<p><img src="/2023/03/26/elasticSearch%E5%9F%BA%E7%A1%80/elasticSearch%E5%AE%89%E8%A3%85%E8%AE%BF%E9%97%AE.webp" alt="elasticSearch安装访问"></p>
 <h2 id="2-安装kibana">2.安装kibana</h2>
 <ol>
 <li>通过docker下载，需要与elasticsearch版本保持一致</li>
@@ -260,7 +260,7 @@
 <li>访问kibana</li>
 </ol>
 <p>若安装成功，则可以直接访问kibana的地址。主机ip+port。此处为5601。若安装失败，使用<code>docker logs 容器id</code>查看日志。</p>
-<p><img src="/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/kibana%E8%AE%BF%E9%97%AE.webp" alt="kibana访问"></p>
+<p><img src="/2023/03/26/elasticSearch%E5%9F%BA%E7%A1%80/kibana%E8%AE%BF%E9%97%AE.webp" alt="kibana访问"></p>
 <h2 id="3-elasticsearch概念">3.elasticSearch概念</h2>
 <h3 id="基本概念：">基本概念：</h3>
 <p>索引（indices）-------------------Databases 数据库<br>
@@ -622,7 +622,7 @@ PUT：<a target="_blank" rel="noopener" href="http://localhost:9200/customer/ext
     <script type="text/javascript">
         $(()=>{
             new QRCode("wechat-qr", {
-                text: "http://songbirds.top/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/",
+                text: "http://songbirds.top/2023/03/26/elasticSearch%E5%9F%BA%E7%A1%80/",
                 width: 150,
                 height: 150,
                 correctLevel : QRCode.CorrectLevel.H
@@ -634,8 +634,8 @@ PUT：<a target="_blank" rel="noopener" href="http://localhost:9200/customer/ext
             const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
             const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
             const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "http://songbirds.top/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/";
-            const title         = "「elesticSearch基础」";
+            const hostUrl       = "http://songbirds.top/2023/03/26/elasticSearch%E5%9F%BA%E7%A1%80/";
+            const title         = "「elasticSearch基础」";
             const excerpt       = `elasticSearch简单介绍，注意，此笔记基于elasticsearch7版本，8版本已经移除type概念。`;
             let _URL;
             switch (dest) {
@@ -658,7 +658,7 @@ PUT：<a target="_blank" rel="noopener" href="http://localhost:9200/customer/ext
                     <a class="tag-none-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a>
                 </div>
                 <div class="pull-date">
-                    <time datetime="2023-04-12T14:24:07.070Z" itemprop="dateModified">最后编辑：2023-04-12</time>
+                    <time datetime="2023-04-22T15:22:02.209Z" itemprop="dateModified">最后编辑：2023-04-22</time>
                 </div>
             </div>
         </footer>
@@ -688,7 +688,7 @@ PUT：<a target="_blank" rel="noopener" href="http://localhost:9200/customer/ext
                 appKey: 'HiWD9QjgIOJLLqiiSMmvw0uU',
                 visitor: false,
                 enableQQ: false,
-                path: '/2023/03/26/elesticSearch%E5%9F%BA%E7%A1%80/',
+                path: '/2023/03/26/elasticSearch%E5%9F%BA%E7%A1%80/',
 				placeholder: '',
 				requiredFields: ['']
             });
