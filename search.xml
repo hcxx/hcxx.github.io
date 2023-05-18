@@ -8,6 +8,26 @@
 ]]></content>
   </entry>
   <entry>
+    <title>那些年玩过的游戏</title>
+    <url>/2023/05/18/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%8E%A9%E8%BF%87%E7%9A%84%E6%B8%B8%E6%88%8F/</url>
+    <content><![CDATA[<p>众所周知，songbirds是一个喜欢玩游戏的人。</p>
+<span id="more"></span>
+<p><a href="https://store.steampowered.com/app/646570/Slay_the_Spire/">Steam 上的 Slay the Spire</a></p>
+<p><img src="/2023/05/18/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%8E%A9%E8%BF%87%E7%9A%84%E6%B8%B8%E6%88%8F/image-20230518233145631.png" alt="Slay the Spire"></p>
+<p><a href="https://store.steampowered.com/app/550/Left_4_Dead_2/">Steam 上的 Left 4 Dead 2</a></p>
+<p><img src="/2023/05/18/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%8E%A9%E8%BF%87%E7%9A%84%E6%B8%B8%E6%88%8F/image-20230518233232089.png" alt="Left 4 Dead 2"></p>
+<p><a href="https://store.steampowered.com/app/730/CounterStrike_Global_Offensive/">Steam 上的 Counter-Strike: Global Offensive</a></p>
+<p><img src="/2023/05/18/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%8E%A9%E8%BF%87%E7%9A%84%E6%B8%B8%E6%88%8F/image-20230518233245995.png" alt="CSGO"></p>
+<p><a href="https://store.steampowered.com/app/322330/_/">Steam 上的 饥荒联机版 </a></p>
+<p><img src="/2023/05/18/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%8E%A9%E8%BF%87%E7%9A%84%E6%B8%B8%E6%88%8F/image-20230518233311893.png" alt="Don't Starve Together"></p>
+<p><a href="https://store.steampowered.com/app/994280/Gujian3/">Steam 上的 古剑奇谭三(Gujian3)</a></p>
+<p><img src="/2023/05/18/%E9%82%A3%E4%BA%9B%E5%B9%B4%E7%8E%A9%E8%BF%87%E7%9A%84%E6%B8%B8%E6%88%8F/image-20230518234228235.png" alt="古剑奇谭三"></p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>jMeter使用</title>
     <url>/2023/05/03/jMeter%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p>jMeter使用</p>
@@ -25,7 +45,7 @@
 <p>启动即可</p>
 <h2 id="4-可能的端口占用异常">4.可能的端口占用异常</h2>
 <p>jMeter在跑大量测试的时候，模拟并发请求都会创建一个连接占用一个端口，win给TCP/IP的链接端口为1024-5000，并且四分钟循环回收，导致短时间大量请求端口占满。</p>
-<p>解决放案参考：</p>
+<p>解决方案参考：</p>
 <p><a href="https://zhuanlan.zhihu.com/p/291449056">Jmeter跑脚本端口占用问题整理 - 知乎</a></p>
 <p><a href="https://blog.csdn.net/fengyuyeguirenenen/article/details/123998742">WINDOWS下JMETER端口占用问题详细解决-CSDN博客</a></p>
 ]]></content>
