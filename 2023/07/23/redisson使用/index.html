@@ -17,16 +17,16 @@
   
     <meta name="keywords" content="中间件" />
   
-  <meta name="description" content="本笔记基于redisson依赖，springBoot项目环境建议使用redisson-spring-boot-starter依赖。redisson锁实现同juc包中的锁。  引入依赖 真实项目中推荐redisson-spring-boot-starter。我这里使用纯redisson依赖。 12345&lt;dependency&gt;    &lt;groupId&gt;org.redisson">
+  <meta name="description" content="本笔记基于redisson依赖，springBoot项目环境建议使用redisson-spring-boot-starter依赖。redisson锁实现同juc包中的锁。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redisson使用">
 <meta property="og:url" content="http://songbirds.top/2023/07/23/redisson%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="Songbirds">
-<meta property="og:description" content="本笔记基于redisson依赖，springBoot项目环境建议使用redisson-spring-boot-starter依赖。redisson锁实现同juc包中的锁。  引入依赖 真实项目中推荐redisson-spring-boot-starter。我这里使用纯redisson依赖。 12345&lt;dependency&gt;    &lt;groupId&gt;org.redisson">
+<meta property="og:description" content="本笔记基于redisson依赖，springBoot项目环境建议使用redisson-spring-boot-starter依赖。redisson锁实现同juc包中的锁。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://songbirds.top/images/avatar.svg">
 <meta property="article:published_time" content="2023-07-23T07:35:12.000Z">
-<meta property="article:modified_time" content="2023-07-23T07:38:44.111Z">
+<meta property="article:modified_time" content="2024-03-09T16:11:19.838Z">
 <meta property="article:author" content="songbirds">
 <meta property="article:tag" content="中间件">
 <meta name="twitter:card" content="summary">
@@ -191,7 +191,7 @@
             
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
                 <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1690097924111"></time> 前，其中的内容可能需要更新。</p></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1710000679838"></time> 前，其中的内容可能需要更新。</p></div>
             </div>
             
             
@@ -202,7 +202,7 @@
             
             <hr />
             <div itemprop="articleBody"><p>本笔记基于redisson依赖，springBoot项目环境建议使用redisson-spring-boot-starter依赖。redisson锁实现同juc包中的锁。</p>
-<!-- readmore -->
+<span id="more"></span>
 <h2 id="引入依赖">引入依赖</h2>
 <p>真实项目中推荐redisson-spring-boot-starter。我这里使用纯redisson依赖。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.redisson<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>redisson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.22.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -300,10 +300,7 @@
             const twitterBase   = "https://twitter.com/intent/tweet?";
             const hostUrl       = "http://songbirds.top/2023/07/23/redisson%E4%BD%BF%E7%94%A8/";
             const title         = "「redisson使用」";
-            const excerpt       = `本笔记基于redisson依赖，springBoot项目环境建议使用redisson-spring-boot-starter依赖。redisson锁实现同juc包中的锁。
-
-引入依赖
-真实项目中推荐redisson-spring-bo...`;
+            const excerpt       = `本笔记基于redisson依赖，springBoot项目环境建议使用redisson-spring-boot-starter依赖。redisson锁实现同juc包中的锁。`;
             let _URL;
             switch (dest) {
                 case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
@@ -325,7 +322,7 @@
                     <a class="tag-none-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a>
                 </div>
                 <div class="pull-date">
-                    <time datetime="2023-07-23T07:38:44.111Z" itemprop="dateModified">最后编辑：2023-07-23</time>
+                    <time datetime="2024-03-09T16:11:19.838Z" itemprop="dateModified">最后编辑：2024-03-10</time>
                 </div>
             </div>
         </footer>
@@ -402,7 +399,7 @@
                 文章
             </span>
             <span class="count">
-                52
+                53
             </span>
         </a>
         <a class="meta-item" href="/categories/">
@@ -441,7 +438,7 @@
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
     <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/">cs基础</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Vue/">Vue</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/sql/">sql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/">站点相关</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">2</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/">cs基础</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/">数据结构与算法</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/">算法</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/cs%E5%9F%BA%E7%A1%80/%E7%AE%97%E6%B3%95/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/Vue/">Vue</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/java/">java</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/sql/">sql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/">站点相关</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AB%99%E7%82%B9%E7%9B%B8%E5%85%B3/%E5%8D%9A%E5%AE%A2%E7%9B%B8%E5%85%B3/">博客相关</a><span class="category-list-count">2</span></li></ul></li></ul>
   </aside>
 
 
